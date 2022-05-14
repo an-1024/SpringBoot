@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: @profileActive@
+
+# bean 属性赋值
+my:
+  name: 江南一点雨
+  address: China
+  favorites:
+    - 足球
+    - 徒步
+    - Coding
+
+user:
+  userList:
+    - name: 江南一点雨
+      address: China
+      favorites:
+        - 足球
+        - 跑步
+        - Coding
+    - name: 江南二点雨
+      address: China
+      favorites:
+        - 阅读
+        - 吉他
+        - Coding

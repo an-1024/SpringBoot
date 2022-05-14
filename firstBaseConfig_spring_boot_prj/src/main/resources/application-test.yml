@@ -1,0 +1,6 @@
+server:
+  port: 8900
+  servlet:
+    context-path: /firstSpringBoot
+  tomcat:
+    uri-encoding: UTF-8
