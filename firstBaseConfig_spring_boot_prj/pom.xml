@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--项目分组、项目名称、版本号-->
+    <groupId>com.azh</groupId>
+    <artifactId>first-spring-boot-prj</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>first-spring-boot-prj</name>
+    <description>第一个 Spring Boot 工程</description>
+
+    <!--
+      start: 不使用 Spring-boot-starter-parent 管理
+    -->
+
+    <!-- 父项目的坐标，坐标包括group ID，artifact ID和version -->
+    <!-- 如果项目中没有规定某个元素的值，那么父项目中的对应值即为项目的默认值 -->
+<!--
+    <parent>
+        &lt;!&ndash;被继承的父项目的构件标识符 &ndash;&gt;
+        <artifactId>spring-boot-starter-parent</artifactId>
+        &lt;!&ndash;被继承的父项目的全球唯一标识符 &ndash;&gt;
+        <groupId>org.springframework.boot</groupId>
+        &lt;!&ndash;被继承的父项目的版本 &ndash;&gt;
+        <version>2.3.9.RELEASE</version>
+        &lt;!&ndash; 父项目的pom.xml文件的相对路径,默认值是../pom.xml。 &ndash;&gt;
+        &lt;!&ndash; 寻找父项目的pom：构建当前项目的地方->relativePath指定的位置->本地仓库->远程仓库 &ndash;&gt;
+        <relativePath/>&lt;!&ndash; lookup parent from repository &ndash;&gt;
+    </parent>
+
+-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.3.9.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--工程属性的全局配置-->
+    <properties>
+        <!-- 源文件编码形式 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 所有插件输出编码形式 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Java 版本 也可以在 plugin 中配置-->
+<!--        <java.version>1.8</java.version>-->
+    </properties>
+
+    <!-- 定义的依赖清单，有所依赖包都需要写在这个标签里面 -->
+    <dependencies>
+        <!-- spring boot 启动依赖，由于指定了spring parent版本，所以这里可以不指定 -->
+        <dependency>
+            <!--依赖项的组织名-->
+            <groupId>org.springframework.boot</groupId>
+            <!--依赖项的子项目名-->
+            <artifactId>spring-boot-starter</artifactId>
+            <!--依赖项的版本-->
+            <!--<version>${引用properties中定义的全局配置变量}</version>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <!-- 依赖项的适用范围 -->
+            <scope>test</scope>
+            <!-- 可选依赖 ，对外隐藏当前所依赖的资源，是不透明的；如果别人依赖了本项目，
+            被配置的不会在别人的项目中依赖到 -->
+            <!-- <optional>true</optional> -->
+            <!-- 排除依赖，主动断开依赖的资源，排除项目中的依赖冲突时使用，
+            不依赖该项目，被排除的资源不需要指定版本-->
+            <!--            <exclusions>
+                            <exclusion>
+                                <groupId></groupId>
+                                <artifactId></artifactId>
+                            </exclusion>
+                        </exclusions>-->
+        </dependency>
+
+        <!--一般我们开发是Web项目，所以还需要引入 Web 的 Starter-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+<!--        &lt;!&ndash;日志依赖模块 logback&ndash;&gt;
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+
+        &lt;!&ndash;日志依赖模块 log4j2&ndash;&gt;
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>-->
+
+        <!--lombok 日志简化使用-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <!--	开发环境		-->
+            <id>dev</id>
+            <properties>
+                <profileActive>dev</profileActive>
+            </properties>
+            <!--	默认激活的环境		-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!--	测试环境		-->
+            <id>test</id>
+            <properties>
+                <profileActive>test</profileActive>
+            </properties>
+        </profile>
+        <profile>
+            <!--	生产环境		-->
+            <id>prod</id>
+            <properties>
+                <profileActive>prod</profileActive>
+            </properties>
+        </profile>
+    </profiles>
+
+    <!-- 构建项目所需要的信息 -->
+    <build>
+        <!-- 插件管理 -->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.9.RELEASE</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
+
+            <!-- maven 的编译插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <!-- Java 版本配置 -->
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application-${profileActive}.yml</include>
+                    <include>application.yml</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
