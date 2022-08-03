@@ -2,7 +2,7 @@ package com.azh.springpostprocessor.dto;
 
 import org.springframework.beans.factory.InitializingBean;
 
-public class MyJavaBeanDto implements InitializingBean {
+public class MyJavaBeanFactoryPostProcessorDto implements InitializingBean {
 	/**
 	 * 姓名
 	 */
@@ -13,10 +13,10 @@ public class MyJavaBeanDto implements InitializingBean {
 	 */
 	private String remark;
 
-	public MyJavaBeanDto() {
+	public MyJavaBeanFactoryPostProcessorDto() {
 	}
 
-	public MyJavaBeanDto(String name, String remark) {
+	public MyJavaBeanFactoryPostProcessorDto(String name, String remark) {
 		this.name = name;
 		this.remark = remark;
 	}
@@ -50,7 +50,7 @@ public class MyJavaBeanDto implements InitializingBean {
 	/**
 	 * bean 类的初始化方法
 	 */
-	public void MyJavaBeanDtoInitMethod (){
+	public void MyJavaBeanFactoryPostProcessorDtoMethod (){
 		System.out.println("MyJavaBeanDto.MyJavaBeanDtoInitMethod 执行指定的初始化方法");
 	}
 }

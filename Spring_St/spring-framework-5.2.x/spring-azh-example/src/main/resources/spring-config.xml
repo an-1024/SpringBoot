@@ -5,9 +5,17 @@
 	<!--测试解析 XML 文件获取 bean-->
 	<bean id="userService" class="com.azh.springxmlparsebean.service.impl.UserServiceImpl"></bean>
 	<!--测试 BeanFactoryPostProcessor-->
-	<bean id="myJavaBeanDto" class="com.azh.springpostprocessor.dto.MyJavaBeanDto" init-method="MyJavaBeanDtoInitMethod">
-		<property name="name" value="测试 BeanFactoryPostProcessor"/>
-		<property name="remark" value="备注信息：运行BeanFactoryPostProcessor"/>
+<!--	<bean id="myJavaBeanFactoryPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanFactoryPostProcessorDto" init-method="MyJavaBeanFactoryPostProcessorDtoMethod">-->
+<!--		<property name="name" value="测试 BeanFactoryPostProcessor"/>-->
+<!--		<property name="remark" value="备注信息：运行BeanFactoryPostProcessor"/>-->
+<!--	</bean>-->
+<!--	<bean id="myBeanFactoryPostProcessor" class="com.azh.springpostprocessor.service.MyBeanFactoryPostProcessor"/>-->
+
+	<!--测试 BeanPostProcessor-->
+	<bean id="myJavaBeanPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanPostProcessorDto" init-method="MyJavaBeanPostProcessorDtoMethod">
+		<property name="name" value="测试 BeanPostProcessor"/>
+		<property name="remark" value="备注信息：运行 BeanPostProcessor"/>
 	</bean>
-	<bean id="myBeanFactoryPostProcessor" class="com.azh.springpostprocessor.service.MyBeanFactoryPostProcessor"/>
+	<bean id="myBeanPostProcessor" class="com.azh.springpostprocessor.service.MyBeanPostProcessor"/>
+	
 </beans>
