@@ -10,7 +10,7 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		System.out.println("MyBeanFactoryPostProcessor.postProcessBeanFactory 调用 MyBeanFactoryPostProcessor 的 postProcessBeanFactory ");
-		BeanDefinition bd = beanFactory.getBeanDefinition("myJavaBean");
+		BeanDefinition bd = beanFactory.getBeanDefinition("myJavaBeanDto");
 		System.out.println("MyBeanFactoryPostProcessor.postProcessBeanFactory 属性值==========" + bd.getPropertyValues());
 	}
 }
