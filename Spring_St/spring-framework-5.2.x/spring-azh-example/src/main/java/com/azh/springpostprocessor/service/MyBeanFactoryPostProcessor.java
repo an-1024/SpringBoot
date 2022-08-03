@@ -1,4 +1,4 @@
-package com.azh.springbeanfactorypostprocessor.service;
+package com.azh.springpostprocessor.service;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
@@ -17,6 +17,6 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor, Ini
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		System.out.println("MyBeanFactoryPostProcessor->" + Class.forName("com.azh.springbeanfactorypostprocessor.service.MyBeanFactoryPostProcessor").getClass());
+		System.out.println("MyBeanFactoryPostProcessor->" + Class.forName("com.azh.springpostprocessor.service.MyBeanFactoryPostProcessor").getClass());
 	}
 }

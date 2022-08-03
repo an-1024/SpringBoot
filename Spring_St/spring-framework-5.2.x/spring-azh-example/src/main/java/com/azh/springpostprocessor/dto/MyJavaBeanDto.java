@@ -1,4 +1,4 @@
-package com.azh.springbeanfactorypostprocessor.dto;
+package com.azh.springpostprocessor.dto;
 
 import org.springframework.beans.factory.InitializingBean;
 
@@ -37,11 +37,19 @@ public class MyJavaBeanDto implements InitializingBean {
 		this.remark = remark;
 	}
 
+	/**
+	 * 实例化后，在bean的属性初始化后执行
+	 * @throws Exception
+	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		System.out.println("MyJavaBeanDto.afterPropertiesSet 实例化后执行");
+		System.out.println("MyJavaBeanDto.afterPropertiesSet 实例化后，在bean的属性初始化后执行");
+		this.remark = "MyJavaBeanDto.afterPropertiesSet 实例化后，在bean的属性初始化后执行";
 	}
 
+	/**
+	 * bean 类的初始化方法
+	 */
 	public void MyJavaBeanDtoInitMethod (){
 		System.out.println("MyJavaBeanDto.MyJavaBeanDtoInitMethod 执行指定的初始化方法");
 	}
