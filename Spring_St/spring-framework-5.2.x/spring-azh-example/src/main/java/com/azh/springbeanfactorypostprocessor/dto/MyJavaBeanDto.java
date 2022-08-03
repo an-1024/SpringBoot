@@ -1,6 +1,8 @@
 package com.azh.springbeanfactorypostprocessor.dto;
 
-public class MyJavaBeanDto {
+import org.springframework.beans.factory.InitializingBean;
+
+public class MyJavaBeanDto implements InitializingBean {
 	/**
 	 * 姓名
 	 */
@@ -33,5 +35,14 @@ public class MyJavaBeanDto {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("MyJavaBeanDto.afterPropertiesSet 实例化后执行");
+	}
+
+	public void MyJavaBeanDtoInitMethod (){
+		System.out.println("MyJavaBeanDto.MyJavaBeanDtoInitMethod 执行指定的初始化方法");
 	}
 }

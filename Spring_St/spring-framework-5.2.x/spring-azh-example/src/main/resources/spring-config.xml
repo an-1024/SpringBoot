@@ -5,7 +5,7 @@
 	<!--测试解析 XML 文件获取 bean-->
 	<bean id="userService" class="com.azh.springxmlparsebean.service.impl.UserServiceImpl"></bean>
 	<!--测试 BeanFactoryPostProcessor-->
-	<bean id="myJavaBeanDto" class="com.azh.springbeanfactorypostprocessor.dto.MyJavaBeanDto">
+	<bean id="myJavaBeanDto" class="com.azh.springbeanfactorypostprocessor.dto.MyJavaBeanDto" init-method="MyJavaBeanDtoInitMethod">
 		<property name="name" value="测试 BeanFactoryPostProcessor"/>
 		<property name="remark" value="备注信息：运行BeanFactoryPostProcessor"/>
 	</bean>
