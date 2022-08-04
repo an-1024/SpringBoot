@@ -516,10 +516,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
-			// Prepare this context for refreshing.
+			// Prepare this context for refreshing
+			/**
+			 * 1. 设置容器启动时间
+			 * 2. 设置容器开、关标志位：active: true; closed: false;
+			 * 3. 验证容器设置的 setRequiredProperties 需要解析的属性是否存在，并且解析值非 null;
+			 * 4. 将监听器放入集合
+			 */
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 创建 bean 工厂：1. 清除之前所有的工厂，并创建新的工厂
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -584,8 +591,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
+		// 容器启动时间
 		this.startupDate = System.currentTimeMillis();
+		// 容器关闭标志位
 		this.closed.set(false);
+		// 容器启动标志位
 		this.active.set(true);
 
 		if (logger.isDebugEnabled()) {
@@ -602,9 +612,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 验证容器所需要的属性是否填充
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...
+		// 监听器集合：为了 Spring 扩展使用 (在 Spring Boot 中有使用)
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
@@ -626,6 +638,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void initPropertySources() {
 		// For subclasses: do nothing by default.
+		System.out.println("AbstractApplicationContext.initPropertySources: For subclasses: do nothing by default");
 	}
 
 	/**

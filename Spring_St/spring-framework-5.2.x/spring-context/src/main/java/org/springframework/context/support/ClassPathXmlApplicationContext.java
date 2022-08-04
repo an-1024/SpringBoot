@@ -139,8 +139,10 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 			throws BeansException {
 
 		super(parent);
+		// 1.设置配置文件路径，并准备 Java 的运行环境：customizePropertySources
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// 刷新环境，创建 bean
 			refresh();
 		}
 	}
