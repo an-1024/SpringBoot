@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 
 import javax.inject.Provider;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;
 import org.springframework.beans.factory.BeanCreationException;
@@ -870,12 +871,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		// While this may not be part of the regular factory bootstrap, it does otherwise work fine.
 		// 将获取到的 bean 名称列表存入 List 集合中
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
+		System.out.println("DefaultListableBeanFactory.preInstantiateSingletons beanNames->: " + JSON.toJSONString(beanNames));
 
 		// Trigger initialization of all non-lazy singleton beans...
 		// for 循环初始化 bean
 		for (String beanName : beanNames) {
 			// 获取 RootBeanDefinition 的描述信息
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			System.out.println("DefaultListableBeanFactory.preInstantiateSingletons RootBeanDefinition.bd->" + bd.toString());
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				// 是否实现了 FactoryBean 接口
 				if (isFactoryBean(beanName)) {

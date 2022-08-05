@@ -6,7 +6,15 @@ group 'org.springframework'
 version '5.2.23.BUILD-SNAPSHOT'
 description = "spring 源码学习"
 
+def fastjson_version = "1.2.73"
+def lombok_version = "1.18.12"
+
 repositories {
+    //指定阿里云镜像
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    mavenLocal()
     mavenCentral()
 }
 
@@ -86,6 +94,10 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    /*引入 JSON*/
+    compile "com.alibaba:fastjson:${fastjson_version}"
+    compileOnly "org.projectlombok:lombok:${lombok_version}"
 }
 
 test {

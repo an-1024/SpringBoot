@@ -3,6 +3,18 @@ description = "Spring Beans"
 apply plugin: "groovy"
 apply plugin: "kotlin"
 
+def fastjson_version = "1.2.73"
+def lombok_version = "1.18.12"
+
+repositories {
+	//指定阿里云镜像
+	maven {
+		url 'http://maven.aliyun.com/nexus/content/groups/public/'
+	}
+	mavenLocal()
+	mavenCentral()
+}
+
 dependencies {
 	compile(project(":spring-core"))
 	optional("javax.inject:javax.inject")
@@ -14,6 +26,9 @@ dependencies {
 	testCompile("javax.annotation:javax.annotation-api")
 	testFixturesApi("org.junit.jupiter:junit-jupiter-api")
 	testFixturesImplementation("org.assertj:assertj-core")
+	/*引入 JSON*/
+	compile "com.alibaba:fastjson:${fastjson_version}"
+	compileOnly "org.projectlombok:lombok:${lombok_version}"
 }
 
 // This module does joint compilation for Java and Groovy code with the compileGroovy task.

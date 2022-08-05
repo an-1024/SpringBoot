@@ -547,6 +547,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Register bean processors that intercept bean creation.
 				// 实例化并注册所有 BeanPostProcessor bean
 				registerBeanPostProcessors(beanFactory);
+				System.out.println("AbstractApplicationContext.refresh postProcessBeanFactory: " + JSON.toJSONString(beanFactory));
 
 				// Initialize message source for this context.
 				// 国际化的操作，可以忽略
@@ -884,7 +885,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Register a default embedded value resolver if no BeanFactoryPostProcessor
 		// (such as a PropertySourcesPlaceholderConfigurer bean) registered any before:
 		// at this point, primarily for resolution in annotation attribute values.
-		// 如果没有设置 BeanFactoryPostProcessor，就创建一个内之类解析属性值，如 "$" "}" 等占位符的解析
+		// 如果没有设置 BeanFactoryPostProcessor，就创建一个内置类解析属性值，如 "$" "}" 等占位符的解析，解析配置文件路径
 		if (!beanFactory.hasEmbeddedValueResolver()) {
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
 		}
