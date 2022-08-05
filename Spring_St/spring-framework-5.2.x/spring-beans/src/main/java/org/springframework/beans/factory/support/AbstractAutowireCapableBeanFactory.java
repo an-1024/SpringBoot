@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.support;
 
+import com.alibaba.fastjson.JSON;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -599,6 +600,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// 填充 bean
 			populateBean(beanName, mbd, instanceWrapper);
+			System.out.println("填充 bean 的属性值结果为: " + JSON.toJSONString(exposedObject));
 			// 初始化给定的 bean 实例，应用工厂回调以及 init 方法和 bean 后处理器。
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
@@ -1794,6 +1796,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}, getAccessControlContext());
 		}
 		else {
+			// 填充 Aware 属性
 			invokeAwareMethods(beanName, bean);
 		}
 
@@ -1803,6 +1806,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			// 执行初始化方法
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {

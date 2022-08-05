@@ -5,7 +5,7 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
-public class UserInfoDto extends BaseInfoDto implements BeanFactoryPostProcessor, BeanPostProcessor {
+public class UserInfoDto extends BaseInfoDto implements BeanPostProcessor {
 
 	private String userRemark;
 
@@ -30,10 +30,6 @@ public class UserInfoDto extends BaseInfoDto implements BeanFactoryPostProcessor
 		this.userDesc = userDesc;
 	}
 
-	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		System.out.println("UserInfoDto.postProcessBeanFactory start execute");
-	}
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -43,7 +39,11 @@ public class UserInfoDto extends BaseInfoDto implements BeanFactoryPostProcessor
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("UserInfoDto.postProcessBeforeInitialization start execute");
+		System.out.println("UserInfoDto.postProcessAfterInitialization start execute");
 		return bean;
+	}
+
+	public void initMethod(){
+		System.out.println("UserInfoDto.initMethod start run");
 	}
 }

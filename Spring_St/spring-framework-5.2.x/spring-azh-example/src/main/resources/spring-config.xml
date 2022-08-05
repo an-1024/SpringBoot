@@ -4,7 +4,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!--测试解析 XML 文件获取 bean-->
 	<bean id="userService" class="com.azh.springxmlparsebean.service.impl.UserServiceImpl"/>
-	<bean id="userInfoDto" class="com.azh.springxmlparsebean.dto.UserInfoDto">
+	<bean id="userInfoDto" class="com.azh.springxmlparsebean.dto.UserInfoDto" init-method="initMethod">
 		<property name="userRemark" value="我是 userInfoDto 的 userRemark"/>
 		<property name="userDesc" value="我是 userInfoDto 的 userDesc"/>
 		<property name="remark" value="我是 userInfoDto 的 remark"/>
