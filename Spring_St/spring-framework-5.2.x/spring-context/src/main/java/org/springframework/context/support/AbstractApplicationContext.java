@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -126,6 +128,7 @@ import org.springframework.util.ReflectionUtils;
  * @see org.springframework.context.ApplicationListener
  * @see org.springframework.context.MessageSource
  */
+@Slf4j
 public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		implements ConfigurableApplicationContext {
 
@@ -524,20 +527,19 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			 * 4. 将监听器放入集合
 			 */
 			prepareRefresh();
-
 			// Tell the subclass to refresh the internal bean factory.
 			// 创建 bean 工厂：1. 清除之前所有的工厂，并创建新的工厂
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-
+			System.out.println("AbstractApplicationContext.refresh create BeanFactory: " + JSON.toJSONString(beanFactory));
 			// Prepare the bean factory for use in this context.
 			// 设置 bean 工厂属性
 			prepareBeanFactory(beanFactory);
-
+			System.out.println("AbstractApplicationContext.refresh populate: " + JSON.toJSONString(beanFactory));
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
 				// 将 bean 的增强处理器放入 bean 的工厂中
 				postProcessBeanFactory(beanFactory);
-
+				System.out.println("AbstractApplicationContext.refresh postProcessBeanFactory: " + JSON.toJSONString(beanFactory));
 				// Invoke factory processors registered as beans in the context.
 				// 执行 bean 的增强处理器
 				invokeBeanFactoryPostProcessors(beanFactory);

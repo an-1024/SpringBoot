@@ -4,6 +4,11 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!--测试解析 XML 文件获取 bean-->
 	<bean id="userService" class="com.azh.springxmlparsebean.service.impl.UserServiceImpl"></bean>
+	<bean id="userInfoDto" class="com.azh.springxmlparsebean.dto.UserInfoDto">
+		<property name="userRemark" value="我是 userInfoDto 的 userRemark"/>
+		<property name="userDesc" value="我是 userInfoDto 的 userDesc"/>
+		<property name="remark" value="我是 userInfoDto 的 remark"/>
+	</bean>
 <!--	测试 BeanFactoryPostProcessor
 	<bean id="myJavaBeanFactoryPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanFactoryPostProcessorDto" init-method="MyJavaBeanFactoryPostProcessorDtoMethod">
 		<property name="name" value="测试 BeanFactoryPostProcessor"/>

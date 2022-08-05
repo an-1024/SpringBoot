@@ -3,6 +3,18 @@ description = "Spring Context"
 apply plugin: "groovy"
 apply plugin: "kotlin"
 
+def fastjson_version = "1.2.73"
+def lombok_version = "1.18.12"
+
+repositories {
+	//指定阿里云镜像
+	maven {
+		url 'http://maven.aliyun.com/nexus/content/groups/public/'
+	}
+	mavenLocal()
+	mavenCentral()
+}
+
 dependencies {
 	compile(project(":spring-aop"))
 	compile(project(":spring-beans"))
@@ -46,4 +58,8 @@ dependencies {
 	testFixturesImplementation(testFixtures(project(":spring-beans")))
 	testFixturesImplementation("com.google.code.findbugs:jsr305")
 	testFixturesImplementation("org.assertj:assertj-core")
+
+	/*引入 JSON*/
+	compile "com.alibaba:fastjson:${fastjson_version}"
+	compileOnly "org.projectlombok:lombok:${lombok_version}"
 }
