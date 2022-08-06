@@ -16,6 +16,8 @@
 
 package org.springframework.core.env;
 
+import com.alibaba.fastjson.JSON;
+
 /**
  * {@link Environment} implementation suitable for use in 'standard' (i.e. non-web)
  * applications.
@@ -75,10 +77,14 @@ public class StandardEnvironment extends AbstractEnvironment {
 	 */
 	@Override
 	protected void customizePropertySources(MutablePropertySources propertySources) {
+		// 除了系统属性，将自定义的属性值添加，比如上面的两个属性 (JVM级别的系统)
 		propertySources.addLast(
 				new PropertiesPropertySource(SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME, getSystemProperties()));
+		// 除了环境变量，将自定义的环境变量添加 (系统级别)
 		propertySources.addLast(
 				new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, getSystemEnvironment()));
+
+		System.out.println("填充 JVM 以及 System 的属性值的结果为：" + JSON.toJSONString(propertySources));
 	}
 
 }

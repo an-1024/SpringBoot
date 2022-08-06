@@ -13,6 +13,14 @@ apply plugin: "kotlin"
 // depend on org.springframework.asm; this avoids including two different copies of asm.
 def cglibVersion = "3.3.0"
 def objenesisVersion = "3.1"
+def fastjson_version = "1.2.73"
+
+repositories {
+	//指定阿里云镜像
+	maven {
+		url 'http://maven.aliyun.com/nexus/content/groups/public/'
+	}
+}
 
 configurations {
 	cglib
@@ -69,6 +77,8 @@ dependencies {
 	testFixturesImplementation("org.assertj:assertj-core")
 	testFixturesImplementation("org.xmlunit:xmlunit-assertj")
 	testFixturesImplementation("io.projectreactor:reactor-test")
+	/*引入 JSON*/
+	compile "com.alibaba:fastjson:${fastjson_version}"
 }
 
 jar {

@@ -16,6 +16,7 @@
 
 package org.springframework.util;
 
+import com.alibaba.fastjson.JSON;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -148,6 +149,7 @@ public class PropertyPlaceholderHelper {
 							"Circular placeholder reference '" + originalPlaceholder + "' in property definitions");
 				}
 				// Recursive invocation, parsing placeholders contained in the placeholder key.
+				// 递归：解析占位符中还包含占位符的路径
 				placeholder = parseStringValue(placeholder, placeholderResolver, visitedPlaceholders);
 				// Now obtain the value for the fully resolved key...
 				String propVal = placeholderResolver.resolvePlaceholder(placeholder);
@@ -186,6 +188,7 @@ public class PropertyPlaceholderHelper {
 				startIndex = -1;
 			}
 		}
+		System.out.println("解析配置文件结果为: " + JSON.toJSONString(result.toString()));
 		return result.toString();
 	}
 
