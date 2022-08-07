@@ -533,11 +533,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			 * 1. 设置容器启动时间
 			 * 2. 设置容器开、关标志位：active: true; closed: false;
 			 * 3. 验证容器设置的 setRequiredProperties 需要解析的属性是否存在，并且解析值非 null;
-			 * 4. 将监听器放入集合
+			 * 4. 将监听器放入集合：默认为 null
 			 */
 			prepareRefresh();
 			// Tell the subclass to refresh the internal bean factory.
 			// 创建 bean 工厂：1. 清除之前所有的工厂，并创建新的工厂
+			// 将 bean 定义属性加载到当前工厂中
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 			System.out.println("AbstractApplicationContext.refresh create BeanFactory: " + JSON.toJSONString(beanFactory));
 			// Prepare the bean factory for use in this context.
@@ -629,20 +630,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		// 留给子类扩展使用，父类没有实现逻辑
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
-		// 验证容器所需要的属性是否填充
+		// 获取验证容器所需要的属性是否填充完成
 		getEnvironment().validateRequiredProperties();
 
 		// Store pre-refresh ApplicationListeners...
-		// 监听器集合：为了 Spring 扩展使用 (在 Spring Boot 中有使用)
+		// 判断刷新前的应用程序监听器集合是否为 null：如果为 null，将集合添加到 earlyApplicationListeners 中，也是个扩展点 (在 Spring Boot 中有监听器)
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		}
 		else {
 			// Reset local application listeners to pre-refresh state.
+			// 如果不等于 null， 则清空集合， 将原有数据放入 applicationListeners
 			this.applicationListeners.clear();
 			this.applicationListeners.addAll(this.earlyApplicationListeners);
 		}
@@ -669,7 +672,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 初始化 BeanFactory, 并进行 XML 读取, 并将得到的 BeanFactory 记录到当前实体的属性当中
 		refreshBeanFactory();
+		// 返回当前 BeanFactory 属性
 		return getBeanFactory();
 	}
 
