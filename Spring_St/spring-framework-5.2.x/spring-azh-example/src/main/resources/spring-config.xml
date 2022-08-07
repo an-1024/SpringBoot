@@ -9,20 +9,20 @@
 		<property name="userDesc" value="我是 userInfoDto 的 userDesc"/>
 		<property name="remark" value="我是 userInfoDto 的 remark"/>
 	</bean>
-<!--	测试 BeanFactoryPostProcessor
+	<!--测试 BeanFactoryPostProcessor-->
 	<bean id="myJavaBeanFactoryPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanFactoryPostProcessorDto" init-method="MyJavaBeanFactoryPostProcessorDtoMethod">
 		<property name="name" value="测试 BeanFactoryPostProcessor"/>
 		<property name="remark" value="备注信息：运行BeanFactoryPostProcessor"/>
 	</bean>
 	<bean id="myBeanFactoryPostProcessor" class="com.azh.springpostprocessor.service.MyBeanFactoryPostProcessor"/>
 
-	&lt;!&ndash;测试 BeanPostProcessor&ndash;&gt;
+	<!--测试 BeanPostProcessor-->
 	<bean id="myJavaBeanPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanPostProcessorDto" init-method="MyJavaBeanPostProcessorDtoMethod">
 		<property name="name" value="测试 BeanPostProcessor"/>
 		<property name="remark" value="备注信息：运行 BeanPostProcessor"/>
 	</bean>
 	<bean id="myBeanPostProcessor" class="com.azh.springpostprocessor.service.MyBeanPostProcessor"/>
 
-	&lt;!&ndash;测试 FactoryBean &ndash;&gt;
-	<bean id="springFactoryBeanDto" class="com.azh.springfactorybean.dto.SpringFactoryBeanDto"/>-->
+	<!--测试 FactoryBean -->
+	<bean id="springFactoryBeanDto" class="com.azh.springfactorybean.dto.SpringFactoryBeanDto"/>
 </beans>

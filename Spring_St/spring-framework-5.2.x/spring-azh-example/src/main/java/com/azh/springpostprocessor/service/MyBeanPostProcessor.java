@@ -1,19 +1,19 @@
 package com.azh.springpostprocessor.service;
 
+import com.alibaba.fastjson.JSON;
 import com.azh.springpostprocessor.dto.MyJavaBeanPostProcessorDto;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 public class MyBeanPostProcessor implements BeanPostProcessor {
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		if (bean instanceof MyJavaBeanPostProcessorDto) {
-			System.out.println("1. BeanPostProcessor，对象" + beanName + "调用初始化方法之前的数据： " + bean.toString());
+		if(bean instanceof  MyJavaBeanPostProcessorDto) {
+			System.out.println("1.MyBeanPostProcessor.postProcessBeforeInitialization 初始化前 myJavaBeanPostProcessorDto 的值：" + JSON.toJSONString(bean));
 		}
 		return bean;
 	}
@@ -21,7 +21,7 @@ public class MyBeanPostProcessor implements BeanPostProcessor {
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		if (bean instanceof MyJavaBeanPostProcessorDto) {
-			System.out.println("4. BeanPostProcessor，对象" + beanName + "调用初始化方法之后的数据：" + bean.toString());
+			System.out.println("3.MyBeanPostProcessor.postProcessBeforeInitialization 初始化后 myJavaBeanPostProcessorDto 的值：" + JSON.toJSONString(bean));
 		}
 		return bean;
 	}

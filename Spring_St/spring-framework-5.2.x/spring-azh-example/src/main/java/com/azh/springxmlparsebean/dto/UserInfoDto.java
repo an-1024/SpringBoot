@@ -4,6 +4,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.core.annotation.Order;
 
 public class UserInfoDto extends BaseInfoDto implements BeanPostProcessor {
 
@@ -33,13 +34,17 @@ public class UserInfoDto extends BaseInfoDto implements BeanPostProcessor {
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("UserInfoDto.postProcessBeforeInitialization start execute");
+		if(bean instanceof UserInfoDto) {
+			System.out.println("UserInfoDto.postProcessBeforeInitialization start execute");
+		}
 		return bean;
 	}
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("UserInfoDto.postProcessAfterInitialization start execute");
+		if(bean instanceof  UserInfoDto) {
+			System.out.println("UserInfoDto.postProcessAfterInitialization start execute");
+		}
 		return bean;
 	}
 
