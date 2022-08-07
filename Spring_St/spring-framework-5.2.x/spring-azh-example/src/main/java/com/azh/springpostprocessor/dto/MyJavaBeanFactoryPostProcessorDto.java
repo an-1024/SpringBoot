@@ -1,8 +1,11 @@
 package com.azh.springpostprocessor.dto;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
-public class MyJavaBeanFactoryPostProcessorDto implements InitializingBean {
+public class MyJavaBeanFactoryPostProcessorDto implements BeanFactoryPostProcessor {
 	/**
 	 * 姓名
 	 */
@@ -38,19 +41,16 @@ public class MyJavaBeanFactoryPostProcessorDto implements InitializingBean {
 	}
 
 	/**
-	 * 实例化后，在bean的属性初始化后执行
-	 * @throws Exception
-	 */
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		System.out.println("MyJavaBeanDto.afterPropertiesSet 实例化后，在bean的属性初始化后执行");
-		this.remark = "MyJavaBeanDto.afterPropertiesSet 实例化后，在bean的属性初始化后执行";
-	}
-
-	/**
 	 * bean 类的初始化方法
 	 */
 	public void MyJavaBeanFactoryPostProcessorDtoMethod (){
 		System.out.println("MyJavaBeanDto.MyJavaBeanDtoInitMethod 执行指定的初始化方法");
+	}
+
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		System.out.println("MyJavaBeanDto.afterPropertiesSet 实例化后，在bean的属性初始化后执行");
+		this.remark = "MyJavaBeanDto.afterPropertiesSet 实例化后，在bean的属性初始化后执行";
+
 	}
 }
