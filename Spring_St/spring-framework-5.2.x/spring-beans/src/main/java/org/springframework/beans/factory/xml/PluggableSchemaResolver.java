@@ -71,7 +71,10 @@ public class PluggableSchemaResolver implements EntityResolver {
 
 	private final String schemaMappingsLocation;
 
-	/** Stores the mapping of schema URL -> local schema path. */
+	/** Stores the mapping of schema URL -> local schema path.
+	 *
+	 * 资源路径映射
+	 * */
 	@Nullable
 	private volatile Map<String, String> schemaMappings;
 
@@ -85,6 +88,7 @@ public class PluggableSchemaResolver implements EntityResolver {
 	 */
 	public PluggableSchemaResolver(@Nullable ClassLoader classLoader) {
 		this.classLoader = classLoader;
+		// 定义的架构文件的位置
 		this.schemaMappingsLocation = DEFAULT_SCHEMA_MAPPINGS_LOCATION;
 	}
 

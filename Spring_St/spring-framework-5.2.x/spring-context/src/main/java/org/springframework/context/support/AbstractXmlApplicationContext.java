@@ -80,17 +80,22 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {
 		// Create a new XmlBeanDefinitionReader for the given BeanFactory.
+		// 设计模式：适配器模式-》将 beanFactory 对象转换为 XmlBeanDefinitionReader 进行处理
 		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
 
 		// Configure the bean definition reader with this context's
 		// resource loading environment.
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
 		beanDefinitionReader.setResourceLoader(this);
+		// ResourceEntityResolver 对应 XML 的标签，可以将其理解架构配置文件(资源库)的标签类
+		// 允许使用标准 XML 实体将 XML 片段包含到应用程序上下文定义中，例如将大型 XML 文件拆分为各种模块
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
 
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
+		// 初始化 bean 的阅读器
 		initBeanDefinitionReader(beanDefinitionReader);
+		// 重载 loadBeanDefinitions 方法
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
@@ -119,10 +124,12 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 	 * @see #getResourcePatternResolver
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws BeansException, IOException {
+		// 以 Resource 的方式获取文件资源路径(用的较少)
 		Resource[] configResources = getConfigResources();
 		if (configResources != null) {
 			reader.loadBeanDefinitions(configResources);
 		}
+		// 以 String 的形式获取配置文件资源路径
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
 			reader.loadBeanDefinitions(configLocations);
