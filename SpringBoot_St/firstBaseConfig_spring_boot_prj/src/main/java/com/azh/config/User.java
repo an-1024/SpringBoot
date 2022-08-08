@@ -1,5 +1,6 @@
 package com.azh.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +8,7 @@ import java.util.List;
 
 @Component
 @ConfigurationProperties(prefix = "my")
+@Slf4j
 public class User {
     /**
      * 姓名
@@ -55,5 +57,10 @@ public class User {
     public void setFavorites(List<String> favorites) {
         this.favorites = favorites;
     }
+
+    public void aspectAop(){
+        log.info("User log");
+    }
+
 
 }

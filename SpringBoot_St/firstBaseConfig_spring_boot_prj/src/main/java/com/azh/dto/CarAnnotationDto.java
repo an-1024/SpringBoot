@@ -1,7 +1,11 @@
 package com.azh.dto;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+
 import java.math.BigDecimal;
 
+@Slf4j
 public class CarAnnotationDto {
 	private int speed;
 
@@ -30,4 +34,9 @@ public class CarAnnotationDto {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
+
+	public void aspectAop(){
+		log.info("CarAnnotationDto log");
+	}
+
 }

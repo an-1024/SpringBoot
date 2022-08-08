@@ -2,13 +2,16 @@ package com.azh.config;
 
 import com.azh.dto.CarAnnotationDto;
 import com.azh.dto.UserAnnotationDto;
-import com.azh.service.MyBeanSpringProcessor;
+import com.azh.dto.MyBeanSpringProcessorDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 import java.math.BigDecimal;
 
 @Configuration
+@Slf4j
 public class BeanPostProcessorConfig {
 	@Bean
 	public UserAnnotationDto userAnnotationDto(){
@@ -21,7 +24,7 @@ public class BeanPostProcessorConfig {
 	}
 
 	@Bean
-	public MyBeanSpringProcessor myBeanSpringProcessor(){
-		return new MyBeanSpringProcessor();
+	public MyBeanSpringProcessorDto myBeanSpringProcessor(){
+		return new MyBeanSpringProcessorDto();
 	}
 }

@@ -1,5 +1,8 @@
 package com.azh.dto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class UserAnnotationDto {
 	private String name;
 
@@ -27,5 +30,10 @@ public class UserAnnotationDto {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+
+	public void aspectAop(){
+		log.info("UserAnnotationDto log");
 	}
 }
