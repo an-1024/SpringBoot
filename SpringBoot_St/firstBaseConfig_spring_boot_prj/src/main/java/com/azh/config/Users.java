@@ -1,5 +1,6 @@
 package com.azh.config;
 
+import com.azh.config.User;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
