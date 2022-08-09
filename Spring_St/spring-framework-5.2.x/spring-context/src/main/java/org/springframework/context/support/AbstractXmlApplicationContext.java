@@ -85,7 +85,9 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 		// Configure the bean definition reader with this context's
 		// resource loading environment.
+		// 给阅读器设置环境
 		beanDefinitionReader.setEnvironment(this.getEnvironment());
+		// 设置资源加载器
 		beanDefinitionReader.setResourceLoader(this);
 		// ResourceEntityResolver 对应 XML 的标签，可以将其理解架构配置文件(资源库)的标签类
 		// 允许使用标准 XML 实体将 XML 片段包含到应用程序上下文定义中，例如将大型 XML 文件拆分为各种模块
@@ -93,7 +95,7 @@ public abstract class AbstractXmlApplicationContext extends AbstractRefreshableC
 
 		// Allow a subclass to provide custom initialization of the reader,
 		// then proceed with actually loading the bean definitions.
-		// 初始化 bean 的阅读器
+		// 初始化 bean 的阅读器是否要进行验证文件
 		initBeanDefinitionReader(beanDefinitionReader);
 		// 重载 loadBeanDefinitions 方法
 		loadBeanDefinitions(beanDefinitionReader);

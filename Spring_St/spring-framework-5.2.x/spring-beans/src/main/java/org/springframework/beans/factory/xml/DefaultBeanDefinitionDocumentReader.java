@@ -145,6 +145,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 			}
 		}
 
+		// XML 扩展点: 子类可以重写该方法实现 XML 元素扩展
 		preProcessXml(root);
 		parseBeanDefinitions(root, this.delegate);
 		postProcessXml(root);
@@ -173,9 +174,11 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				if (node instanceof Element) {
 					Element ele = (Element) node;
 					if (delegate.isDefaultNamespace(ele)) {
+						// 解析标准定义的标签
 						parseDefaultElement(ele, delegate);
 					}
 					else {
+						// 解析自定义的标签
 						delegate.parseCustomElement(ele);
 					}
 				}
