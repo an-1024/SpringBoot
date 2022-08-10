@@ -1385,15 +1385,19 @@ public class BeanDefinitionParserDelegate {
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
+		// 获取命名空的URL
 		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
 		}
+		// 用于处理 Spring XML 配置文件中的自定义命名空间的基本接口。
+		// 从配置的映射中找到提供的命名空间 URI 的 NamespaceHandler 实现
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
 			return null;
 		}
+		// 通过 handle 调用解析方法
 		return handler.parse(ele, new ParserContext(this.readerContext, this, containingBd));
 	}
 
