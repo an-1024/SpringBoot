@@ -12,7 +12,7 @@ public class SpringInitPropertySourcesApplicationContext extends ClassPathXmlApp
 	@Override
 	protected void initPropertySources() {
 		System.out.println("子类扩展 initPropertySources");
-		getEnvironment().setRequiredProperties("username");
+		getEnvironment().setRequiredProperties("user");
 	}
 
 	@Override
@@ -21,4 +21,11 @@ public class SpringInitPropertySourcesApplicationContext extends ClassPathXmlApp
 		super.setAllowCircularReferences(false);
 		super.customizeBeanFactory(beanFactory);
 	}
+
+	@Override
+	public void setId(String id) {
+		super.setId(id);
+	}
+
+
 }
