@@ -517,20 +517,26 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
-			//
+			// 为给定的类名和父名创建一个 bean 定义 实际操作类是 GenericBeanDefinition
+			// 其实此时已经满足实例化 BeanDefinition 了
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
-
+			// 解析 bean 标签的其他各种属性，比如单例属性， scope，是否懒加载
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 
+			// 解析 bean 的数据元 比如 key 属性， value 属性等
 			parseMetaElements(ele, bd);
+			//解析 bean 是否有子类的标签属性
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
+			// 解析 bean 是否有子类重写了 bean 的方法标签属性
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
-
+			// 解析 bean 的构造函数 标签属性
 			parseConstructorArgElements(ele, bd);
+			// 解析子类的 property 标签属性
 			parsePropertyElements(ele, bd);
+			// 解析 qualifier 标签属性
 			parseQualifierElements(ele, bd);
-
+			// 设置资源管理器
 			bd.setResource(this.readerContext.getResource());
 			bd.setSource(extractSource(ele));
 
