@@ -534,7 +534,7 @@ public class BeanDefinitionParserDelegate {
 			parseConstructorArgElements(ele, bd);
 			// 解析子类的 property 标签属性
 			parsePropertyElements(ele, bd);
-			// 解析 qualifier 标签属性
+			// 解析子类 qualifier 标签属性
 			parseQualifierElements(ele, bd);
 			// 设置资源管理器
 			bd.setResource(this.readerContext.getResource());
