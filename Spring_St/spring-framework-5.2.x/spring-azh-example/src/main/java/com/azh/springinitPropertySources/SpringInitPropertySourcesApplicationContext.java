@@ -12,7 +12,7 @@ public class SpringInitPropertySourcesApplicationContext extends ClassPathXmlApp
 	@Override
 	protected void initPropertySources() {
 		System.out.println("子类扩展 initPropertySources");
-		getEnvironment().setRequiredProperties("user");
+		getEnvironment().setRequiredProperties("env");
 	}
 
 	@Override

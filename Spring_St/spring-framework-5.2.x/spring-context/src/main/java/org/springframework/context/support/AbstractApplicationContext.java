@@ -239,6 +239,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * 资源管理器类的创建：可以理解为文件解析类
 	 */
 	public AbstractApplicationContext() {
+		// 创建资源模式处理器
 		this.resourcePatternResolver = getResourcePatternResolver();
 	}
 
