@@ -316,7 +316,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		// BeanDefinitionHolder 是对 beanDefinition 的封装，增加了 BeanDefinition beanDefinition
 		// BeanDefinition beanName bean 的名称  BeanDefinition String[] aliases 别名，用BeanDefinitionHolder完成
 		// BeanDefinition 的创建，也意味着这个 BeanDefinition 是通过 BeanDefinitionParserDelegate 对 XML 文件元素的信息按照 spring
-		// 的 bean 规则解析得到了
+		// 的 bean 规则解析得到的
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		if (bdHolder != null) {
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);

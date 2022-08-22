@@ -940,6 +940,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		if (beanDefinition instanceof AbstractBeanDefinition) {
 			try {
+				// 验证这个 bean 定义，这里的校验不同于之前的 XML 校验，主要是对 AbstractBeanDefinition 属性 methodOverrides 属性校验
+				// 校验 methodOverrides 是否与工厂方法并存或者 methodOverrides 对应的方法根本不存在
 				((AbstractBeanDefinition) beanDefinition).validate();
 			}
 			catch (BeanDefinitionValidationException ex) {
@@ -949,7 +951,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
+		// 如果名称为 beanName 的 bean 不为 null 进行相应的逻辑处理
 		if (existingDefinition != null) {
+			// 如果定义的 BeanDefinition 不允许被覆盖，则抛出异常
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
@@ -978,20 +982,29 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {
+			// 是否已经处理完成
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
+					// 将 beanDefinition 放入 beanDefinitionMap 集合中
 					this.beanDefinitionMap.put(beanName, beanDefinition);
+					// 原有 beanDefinitionNames 集合长度 + 1
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
+					// 将 beanDefinitionNames 放入需要更新的集合中 updatedDefinitions
 					updatedDefinitions.addAll(this.beanDefinitionNames);
+					// 将 beanName 放入
 					updatedDefinitions.add(beanName);
+					// beanDefinitionNames 重新赋值
 					this.beanDefinitionNames = updatedDefinitions;
+					// 更新手动操作单例的名称集合
 					removeManualSingletonName(beanName);
 				}
 			}
 			else {
 				// Still in startup registration phase
+				// 注册 beanDefinition
 				this.beanDefinitionMap.put(beanName, beanDefinition);
+				// 记录 beanName
 				this.beanDefinitionNames.add(beanName);
 				removeManualSingletonName(beanName);
 			}

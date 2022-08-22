@@ -67,7 +67,7 @@ public class SimpleAliasRegistry implements AliasRegistry {
 						// An existing alias - no need to re-register
 						return;
 					}
-					if (!allowAliasOverriding()) {
+					if (!allowAliasOverriding()) {  // 如果 alias 不允许覆盖则抛出异常
 						throw new IllegalStateException("Cannot define alias '" + alias + "' for name '" +
 								name + "': It is already registered for name '" + registeredName + "'.");
 					}
@@ -76,7 +76,9 @@ public class SimpleAliasRegistry implements AliasRegistry {
 								registeredName + "' with new target name '" + name + "'");
 					}
 				}
+				// 校验别名是否有循环引用，比如 A-B 存在, 再次出现 A->C->B 的时候抛出异常
 				checkForAliasCircle(name, alias);
+				// 放入别名的集合中
 				this.aliasMap.put(alias, name);
 				if (logger.isTraceEnabled()) {
 					logger.trace("Alias definition '" + alias + "' registered for name '" + name + "'");
