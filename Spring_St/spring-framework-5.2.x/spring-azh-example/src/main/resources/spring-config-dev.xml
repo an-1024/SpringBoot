@@ -1,28 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<!--测试解析 XML 文件获取 bean-->
-	<bean id="userService" class="com.azh.springxmlparsebean.service.impl.UserServiceImpl"/>
-	<bean id="userInfoDto" class="com.azh.springxmlparsebean.dto.UserInfoDto" init-method="initMethod">
-		<property name="userRemark" value="我是 userInfoDto 的 userRemark"/>
-		<property name="userDesc" value="我是 userInfoDto 的 userDesc"/>
-		<property name="remark" value="我是 userInfoDto 的 remark"/>
-	</bean>
-	<!--测试 BeanFactoryPostProcessor-->
-	<bean id="myJavaBeanFactoryPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanFactoryPostProcessorDto" init-method="MyJavaBeanFactoryPostProcessorDtoMethod">
-		<property name="name" value="测试 BeanFactoryPostProcessor"/>
-		<property name="remark" value="备注信息：运行BeanFactoryPostProcessor"/>
-	</bean>
-	<bean id="myBeanFactoryPostProcessor" class="com.azh.springpostprocessor.service.MyBeanFactoryPostProcessor"/>
-
-	<!--测试 BeanPostProcessor-->
-	<bean id="myJavaBeanPostProcessorDto" class="com.azh.springpostprocessor.dto.MyJavaBeanPostProcessorDto" init-method="MyJavaBeanPostProcessorDtoMethod">
-		<property name="name" value="测试 BeanPostProcessor"/>
-		<property name="remark" value="备注信息：运行 BeanPostProcessor"/>
-	</bean>
-	<bean id="myBeanPostProcessor" class="com.azh.springpostprocessor.service.MyBeanPostProcessor"/>
-
-	<!--测试 FactoryBean -->
-	<bean id="springFactoryBeanDto" class="com.azh.springfactorybean.dto.SpringFactoryBeanDto"/>
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	<!--非标准标签解析-->
+	<context:property-placeholder location="classpath:db.properties"/>
 </beans>

@@ -1391,7 +1391,7 @@ public class BeanDefinitionParserDelegate {
 	 */
 	@Nullable
 	public BeanDefinition parseCustomElement(Element ele, @Nullable BeanDefinition containingBd) {
-		// 获取命名空的URL
+		// 获取命名空的 URL 比如：context对应的 url：http://www.springframework.org/schema/context
 		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
@@ -1403,7 +1403,7 @@ public class BeanDefinitionParserDelegate {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
 			return null;
 		}
-		// 通过 handle 调用解析方法
+		// 通过自定义的 NamespaceHandler 解析
 		return handler.parse(ele, new ParserContext(this.readerContext, this, containingBd));
 	}
 

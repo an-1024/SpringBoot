@@ -60,9 +60,12 @@ public abstract class AbstractSingleBeanDefinitionParser extends AbstractBeanDef
 	 */
 	@Override
 	protected final AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
+		// 创建 BeadDefinition 生成器
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition();
+		// 获取元素父类名称
 		String parentName = getParentName(element);
 		if (parentName != null) {
+			// 如果有父类元素，将该元素设置为 AbstractBeanDefinition 的父类
 			builder.getRawBeanDefinition().setParentName(parentName);
 		}
 		Class<?> beanClass = getBeanClass(element);

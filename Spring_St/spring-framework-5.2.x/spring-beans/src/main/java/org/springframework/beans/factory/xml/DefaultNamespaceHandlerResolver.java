@@ -99,6 +99,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	 * may be {@code null}, in which case the thread context ClassLoader will be used)
 	 * @param handlerMappingsLocation the mapping file location
 	 */
+	// 处理程序映射位置 赋值
 	public DefaultNamespaceHandlerResolver(@Nullable ClassLoader classLoader, String handlerMappingsLocation) {
 		Assert.notNull(handlerMappingsLocation, "Handler mappings location must not be null");
 		this.classLoader = (classLoader != null ? classLoader : ClassUtils.getDefaultClassLoader());
@@ -115,24 +116,32 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	@Override
 	@Nullable
 	public NamespaceHandler resolve(String namespaceUri) {
+		// 延迟加载指定的 NamespaceHandler 映射
 		Map<String, Object> handlerMappings = getHandlerMappings();
+		// 根据命名空间找到对应的信息
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);
 		if (handlerOrClassName == null) {
 			return null;
 		}
 		else if (handlerOrClassName instanceof NamespaceHandler) {
+			// 如果已经解析过，则直接返回 handlerOrClassName
 			return (NamespaceHandler) handlerOrClassName;
 		}
 		else {
+			// 没有解析，则返回的是类路径
 			String className = (String) handlerOrClassName;
 			try {
+				// 通过反射将类路径转化为类
 				Class<?> handlerClass = ClassUtils.forName(className, this.classLoader);
 				if (!NamespaceHandler.class.isAssignableFrom(handlerClass)) {
 					throw new FatalBeanException("Class [" + className + "] for namespace [" + namespaceUri +
 							"] does not implement the [" + NamespaceHandler.class.getName() + "] interface");
 				}
+				// 实例化命名空间处理器
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
+				// 初始化自定义元素
 				namespaceHandler.init();
+				// 将得到的映射文件 Uri 与 命名空间处理器放入 handlerMappings 集合中
 				handlerMappings.put(namespaceUri, namespaceHandler);
 				return namespaceHandler;
 			}
@@ -149,6 +158,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 
 	/**
 	 * Load the specified NamespaceHandler mappings lazily.
+	 * 延迟加载指定的 NamespaceHandler 映射。
 	 */
 	private Map<String, Object> getHandlerMappings() {
 		Map<String, Object> handlerMappings = this.handlerMappings;
@@ -180,9 +190,13 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	}
 
 
+//	@Override
+//	public String toString() {
+//		return "NamespaceHandlerResolver using mappings " + getHandlerMappings();
+//	}
+
 	@Override
 	public String toString() {
-		return "NamespaceHandlerResolver using mappings " + getHandlerMappings();
+		return "NamespaceHandlerResolver using mappings do Nothing";
 	}
-
 }
