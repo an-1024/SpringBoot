@@ -1,6 +1,6 @@
 package com.azh.customelementparse.parser;
 
-import org.springframework.beans.factory.config.BeanDefinition;
+import com.azh.customelementparse.dto.CustomElementAzh;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -12,15 +12,15 @@ public class CustomElementParser extends AbstractSingleBeanDefinitionParser {
 	// 获取属性类
 	@Override
 	protected Class<?> getBeanClass(Element element) {
-		return CustomElementParser.class;
+		return CustomElementAzh.class;
 	}
 
 	// 获取属性值
 	@Override
-	protected void doParse(Element element, ParserContext parserContext, BeanDefinitionBuilder builder) {
-		String name = element.getAttribute("name");
+	protected void doParse(Element element, BeanDefinitionBuilder builder) {
+		String name = element.getAttribute("user-name");
 		if (StringUtils.hasText(name)) {
-			builder.addPropertyReference("name", name);
+			builder.addPropertyValue("userName", name);
 		}
 
 		String email = element.getAttribute("email");
@@ -28,7 +28,7 @@ public class CustomElementParser extends AbstractSingleBeanDefinitionParser {
 			builder.addPropertyValue("email", email);
 		}
 
-		String userPhone = element.getAttribute("userPhone");
+		String userPhone = element.getAttribute("user-phone");
 		if (StringUtils.hasText(userPhone)) {
 			builder.addPropertyValue("userPhone", userPhone);
 		}

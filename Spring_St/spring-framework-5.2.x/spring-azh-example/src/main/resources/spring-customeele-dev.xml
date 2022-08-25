@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:myCustomElementAzh="http://www.localhost.com/schema/customElementAzh"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	   http://www.localhost.com/schema/customElementAzh http://www.localhost.com/schema/customElementAzh.xsd">
+
+	<myCustomElementAzh:customElementAzh id="myCustomElementAzh" user-name="customElementAzh" user-phone="111111111" email="1234@qq.com"/>
+</beans>

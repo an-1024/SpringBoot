@@ -1,22 +1,19 @@
 package com.azh.customelementparse.dto;
 
 public class CustomElementAzh {
-	private String name;
+	private String userName;
 
 	private String email;
 
 	private String userPhone;
 
-	public CustomElementAzh() {
+
+	public String getUserName() {
+		return userName;
 	}
 
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getEmail() {
@@ -33,5 +30,14 @@ public class CustomElementAzh {
 
 	public void setUserPhone(String userPhone) {
 		this.userPhone = userPhone;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomElementAzh{" +
+				"userName='" + userName + '\'' +
+				", email='" + email + '\'' +
+				", userPhone='" + userPhone + '\'' +
+				'}';
 	}
 }

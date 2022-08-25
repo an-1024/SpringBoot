@@ -6,6 +6,6 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 public class CustomElementHandler extends NamespaceHandlerSupport {
 	@Override
 	public void init() {
-		registerBeanDefinitionParser("azh", new CustomElementParser());
+		registerBeanDefinitionParser("customElementAzh", new CustomElementParser());
 	}
 }

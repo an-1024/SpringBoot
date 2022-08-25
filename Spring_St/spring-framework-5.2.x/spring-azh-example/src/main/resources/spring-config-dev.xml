@@ -2,13 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:azh="http://www.springframework.org/schema/azh"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	   http://www.springframework.org/schema/context
-	   https://www.springframework.org/schema/context/spring-context.xsd
-	   http://www.springframework.org/schema/azh http://www.springframework.org/schema/azh.xsd">
-	<azh:azh name="CustomElement" email="12345@www.com" userPhone="12345上山打老虎"/>
+	   https://www.springframework.org/schema/context/spring-context.xsd">
 	<!--非标准标签解析-->
 	<context:property-placeholder location="classpath:db.properties"/>
 </beans>
