@@ -57,21 +57,31 @@ final class PostProcessorRegistrationDelegate {
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		// 无论什么情况，优先执行 BeanDefinitionRegistryPostProcessors，将已经执行过的 BeanFactoryPostProcessor
+		// 存储在 processedBeans 中，防止重复执行,hashSet 去重
 		Set<String> processedBeans = new HashSet<>();
 
+		// 判断 beanFactory 是否是 BeanDefinitionRegistry 类型，此处的 beanFactory 是 DefaultListableBeanFactory, 实现了 BeanDefinitionRegistry
+		// 接口，为 true
 		if (beanFactory instanceof BeanDefinitionRegistry) {
+			// 将 beanFactory 转换为 BeanDefinitionRegistry
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+			// BeanFactoryPostProcessor 集合
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			// BeanDefinitionRegistryPostProcessor 集合
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
-
+			// 此处需要做一个区分：两个接口是不同的：需要区分 BeanDefinitionRegistryPostProcessor 操作 beandefinition
+			// 和 BeanFactoryPostProcessor 操作 beanFactory，前者是后者的子集
+			// 遍历 beanFactoryPostProcessors 集合
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
+				// 如果处理器属于 BeanDefinitionRegistryPostProcessor
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
-				else {
+				else { // 否则添加 BeanFactoryPostProcessor 的集合中
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -80,6 +90,7 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			// 当前注册表的处理器集合
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.

@@ -541,24 +541,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// 创建 bean 工厂：1. 清除之前所有的工厂，并创建新的工厂
 			// 将 bean 定义属性加载到当前工厂中
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
-			System.out.println("AbstractApplicationContext.refresh create BeanFactory: " + JSON.toJSONString(beanFactory));
 			// Prepare the bean factory for use in this context.
 			// 设置 bean 工厂属性
 			prepareBeanFactory(beanFactory);
-			System.out.println("AbstractApplicationContext.refresh populate: " + JSON.toJSONString(beanFactory));
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
-				// 将 bean 的增强处理器放入 bean 的工厂中
+				// 子类覆盖方法做额外的处理，此处一般不做任何扩展工作，在 Spring MVC 以及 Spring Boot 中有相关的操作
+				// 可以操作 beanFactory
 				postProcessBeanFactory(beanFactory);
-				System.out.println("AbstractApplicationContext.refresh postProcessBeanFactory: " + JSON.toJSONString(beanFactory));
 				// Invoke factory processors registered as beans in the context.
-				// 执行 bean 的增强处理器
+				// 调用各种 beanFactory 处理器
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
 				// 实例化并注册所有 BeanPostProcessor bean
 				registerBeanPostProcessors(beanFactory);
-				System.out.println("AbstractApplicationContext.refresh postProcessBeanFactory: " + JSON.toJSONString(beanFactory));
 
 				// Initialize message source for this context.
 				// 国际化的操作，可以忽略
@@ -696,7 +693,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
-		// 添加 bean 实例化后的后置处理器
+		// 添加 bean 实例化后的后置处理器，最终在 invokeAwareInterfaces 即 bean 的前置处理器中执行
+		// 因此通过这个接口我们可以定义自己的 Aware 接口完成某些 Aware 的注入
+		// new ApplicationListenerDetector(this) 完成某些 Aware 的注入
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 		// 设置要忽略自动装配的接口，这是因为这些接口的实现是由容器通过 set 方法进行注入的
 		// 所以需要在自动注入的时候进行忽略
@@ -709,6 +708,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
+		// 设置几个自动装配的特殊规则，当在进行 ioc 初始化的如果有多个实现，那么就使用指定的对象进行注入, byType
+		// byName，然后下面是指定的加载顺序
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
@@ -718,7 +719,13 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// 添加 bean 实例化后的后置处理器
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector(this));
 
-		// Detect a LoadTimeWeaver and prepare for weaving, if found.
+		// Detect a LoadTimeWeaver and pre pare for weaving, if found.
+		// 增加对 AspectJ 的支持，在Java 中织入分为三种：分为编译器织入、类加载器织入，运行器织入。
+		// 编译器织入是指在 Java 编译器，采用特殊的编译器，将切面织入到 java 类中
+		// 而类加载器织入则通过特殊的类加载器，在类字节码加载到 JVM 时，织入切面
+		// 运行期织入则是采用 cglib 和 jdk 进行切面的织入
+		// aspectJ 提供了两种织入方式，第一种是通过特殊编译器，将 aspectJ 语言编写的切面类织入到 Java 中，第二种就是类加载器织入，就是下面这段代码
+		// loadTimeWeaver
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
@@ -726,6 +733,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Register default environment beans.
+		// 将默认的系统环境添加到一级缓存中
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}
@@ -753,6 +761,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * <p>Must be called before singleton instantiation.
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		// 获取到当前应用程序上下文的 beanFactoryPostProcessor 变量的值，并且实例化调用执行所有已经注册的 beanFactoryPostProcessor
+		// 默认情况下，通过 getBeanFactoryPostProcessor() 来获取已经注册的 beanFactoryPostProcessor
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
