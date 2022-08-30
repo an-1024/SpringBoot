@@ -28,9 +28,6 @@ public class MyBeanDefinitionRegistryPostProcessorPriorityOrdered implements Bea
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 		System.out.println("MyBeanDefinitionRegistryPostProcessorPriorityOrdered.postProcessBeanDefinitionRegistry 调用 MyBeanDefinitionRegistryPostProcessorPriorityOrdered 的 postProcessBeanDefinitionRegistry ");
-		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(MyBeanDefinitionRegistryPostProcessorAddByPriorityOrderedPostProcessor.class);
-		beanDefinitionBuilder.addPropertyValue("name", "MyBeanDefinitionRegistryPostProcessorAddByPriorityOrderedPostProcessor");
-		registry.registerBeanDefinition("myBeanDefinitionRegistryPostProcessorAddByPriorityOrderedPostProcessor", beanDefinitionBuilder.getBeanDefinition());
 	}
 
 	@Override

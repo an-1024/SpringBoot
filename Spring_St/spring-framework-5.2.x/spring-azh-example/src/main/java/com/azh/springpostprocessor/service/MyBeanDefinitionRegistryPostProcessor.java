@@ -1,6 +1,5 @@
 package com.azh.springpostprocessor.service;
 
-import com.azh.springpostprocessor.dto.MyJavaBeanFactoryPostProcessorDto;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
