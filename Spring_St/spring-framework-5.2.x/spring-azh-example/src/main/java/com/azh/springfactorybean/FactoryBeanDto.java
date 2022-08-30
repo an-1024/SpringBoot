@@ -1,4 +1,4 @@
-package com.azh.springfactorybean.dto;
+package com.azh.springfactorybean;
 
 import org.springframework.beans.factory.FactoryBean;
 

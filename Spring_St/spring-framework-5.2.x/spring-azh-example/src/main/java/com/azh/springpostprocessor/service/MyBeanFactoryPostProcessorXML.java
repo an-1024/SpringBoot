@@ -1,12 +1,13 @@
-package com.azh.springfactorybean.dto;
+package com.azh.springpostprocessor.service;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
-public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
+public class MyBeanFactoryPostProcessorXML implements BeanFactoryPostProcessor {
+
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		System.out.println("执行添加实现的 beanFactoryPostProcessor -> MyBeanFactoryPostProcessor");
+		System.out.println("MyBeanFactoryPostProcessorXML.postProcessBeanFactory 调用 MyBeanFactoryPostProcessorXML 的 postProcessBeanFactory ");
 	}
 }

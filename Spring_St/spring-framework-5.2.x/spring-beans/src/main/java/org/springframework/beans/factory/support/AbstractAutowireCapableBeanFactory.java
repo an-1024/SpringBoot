@@ -616,7 +616,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			// 填充 bean
 			populateBean(beanName, mbd, instanceWrapper);
-			System.out.println("填充 bean 的属性值结果为: " + JSON.toJSONString(exposedObject));
 			// 初始化给定的 bean 实例，应用工厂回调以及 init 方法和 bean 后处理器。
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}

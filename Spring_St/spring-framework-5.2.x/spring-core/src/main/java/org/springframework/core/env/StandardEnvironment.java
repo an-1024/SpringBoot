@@ -83,8 +83,6 @@ public class StandardEnvironment extends AbstractEnvironment {
 		// 除了环境变量，将自定义的环境变量添加 (系统级别)
 		propertySources.addLast(
 				new SystemEnvironmentPropertySource(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, getSystemEnvironment()));
-
-		System.out.println("填充 JVM 以及 System 的属性值的结果为：" + JSON.toJSONString(propertySources));
 	}
 
 }

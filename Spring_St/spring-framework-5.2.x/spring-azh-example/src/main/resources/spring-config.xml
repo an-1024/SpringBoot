@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+	<!--指定包的扫描路径-->
+	<context:component-scan base-package="com.azh"/>
 	<!--测试解析 XML 文件获取 bean-->
 	<bean id="userService" class="com.azh.springxmlparsebean.service.impl.UserServiceImpl"/>
 	<bean id="userInfoDto" class="com.azh.springxmlparsebean.dto.UserInfoDto" init-method="initMethod">
@@ -24,5 +27,5 @@
 	<bean id="myBeanPostProcessor" class="com.azh.springpostprocessor.service.MyBeanPostProcessor"/>
 
 	<!--测试 FactoryBean -->
-	<bean id="springFactoryBeanDto" class="com.azh.springfactorybean.dto.SpringFactoryBeanDto"/>
+	<bean id="springFactoryBeanDto" class="com.azh.springfactorybean.SpringFactoryBeanDto"/>
 </beans>

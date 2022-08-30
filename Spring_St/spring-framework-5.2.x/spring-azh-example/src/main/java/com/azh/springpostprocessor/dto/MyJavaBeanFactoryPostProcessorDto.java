@@ -14,6 +14,7 @@ public class MyJavaBeanFactoryPostProcessorDto implements InitializingBean {
 	private String remark;
 
 	public MyJavaBeanFactoryPostProcessorDto() {
+		System.out.println("执行 MyJavaBeanFactoryPostProcessorDto 构造函数");
 	}
 
 	public MyJavaBeanFactoryPostProcessorDto(String name, String remark) {
