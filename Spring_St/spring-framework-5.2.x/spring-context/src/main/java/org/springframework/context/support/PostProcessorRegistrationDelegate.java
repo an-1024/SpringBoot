@@ -75,7 +75,8 @@ final class PostProcessorRegistrationDelegate {
 			// 遍历 beanFactoryPostProcessors 集合
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				// 对 BeanFactoryPostProcessor 和 BeanDefinitionRegistryPostProcessor 接口进行区分，分别放入不同的集合
-				// 如果处理器属于 BeanDefinitionRegistryPostProcessor 获取手动添加的处理器
+				// 如果处理器属于 BeanDefinitionRegistryPostProcessor 获取手动添加的处理器，需要明白的是这个处理器并没有放入
+				// spring 的集合中
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
