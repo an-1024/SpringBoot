@@ -157,14 +157,18 @@ public class ComponentScanBeanDefinitionParser implements BeanDefinitionParser {
 			annotationConfig = Boolean.parseBoolean(element.getAttribute(ANNOTATION_CONFIG_ATTRIBUTE));
 		}
 		if (annotationConfig) {
-			// 如果 annotationConfig 值为 true
+			// 如果 annotation-config 属性值为 true，在给定的注册表中注册所有用于注解的bean后置处理器
+			// 需要理解的是这里只是完成了第一步的加载-》解析 XML 的属性，针对于类上的注解以及类的内部注解并不是
+			// 在这里完成的，而是在 org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors
+			// 处理后置处理器完成的
 			Set<BeanDefinitionHolder> processorDefinitions =
 					AnnotationConfigUtils.registerAnnotationConfigProcessors(readerContext.getRegistry(), source);
 			for (BeanDefinitionHolder processorDefinition : processorDefinitions) {
+				// 将注册的注解后置处理器的 BeanDefinition 添加到 compositeDef 的 nestedComponents 集合属性中
 				compositeDef.addNestedComponent(new BeanComponentDefinition(processorDefinition));
 			}
 		}
-
+		// 触发组件注册事件，默认实现为 EmptyReaderEventListener
 		readerContext.fireComponentRegistered(compositeDef);
 	}
 

@@ -4,7 +4,7 @@ import com.azh.springpostprocessor.service.MySpringFactoryBeanContext;
 import com.azh.springpostprocessor.service.SpringComponentScan;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class SpringFactoryBeanApplication extends ClassPathXmlApplicationContext {
+public class SpringFactoryPostProcessorBeanApplication extends ClassPathXmlApplicationContext {
 	public static void main(String[] args) {
 		MySpringFactoryBeanContext mySpringFactoryBeanContext = new MySpringFactoryBeanContext("spring-beanFactoryPostProcessor.xml");
 
