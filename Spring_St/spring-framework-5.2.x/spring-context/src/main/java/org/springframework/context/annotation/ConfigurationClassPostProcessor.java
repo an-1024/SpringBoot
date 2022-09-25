@@ -223,17 +223,21 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 */
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) {
+		// 根据对应的 registry 对象生成 hashCode 值，此对象只会操作一次，如果之前处理过则抛出异常
 		int registryId = System.identityHashCode(registry);
+		// ProcessBeanDefinitionRegistry 是否已经执行
 		if (this.registriesPostProcessed.contains(registryId)) {
 			throw new IllegalStateException(
 					"postProcessBeanDefinitionRegistry already called on this post-processor against " + registry);
 		}
+		// postProcessBeanFactory 是否已经执行
 		if (this.factoriesPostProcessed.contains(registryId)) {
 			throw new IllegalStateException(
 					"postProcessBeanFactory already called on this post-processor against " + registry);
 		}
+		// 将要执行实现处理器的 BeanDefinitionRegistry 的 id 放入已经处理的集合对象中
 		this.registriesPostProcessed.add(registryId);
-
+		// 处理配置类的 bean 定义信息
 		processConfigBeanDefinitions(registry);
 	}
 
@@ -264,27 +268,36 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	 * {@link Configuration} classes.
 	 */
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
+		// 创建存放 BeanDefinitionHolder 的对象集合
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
+		// 当前 registry 就是 DefaultListableBeanFactory, 获取所有已经注册的 BeanDefinition的
 		String[] candidateNames = registry.getBeanDefinitionNames();
-
+		// 遍历所有要处理的 BeanDefinition 的名称
 		for (String beanName : candidateNames) {
+			// 根据名称获取对应 BeanDefinition 对象
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);
+			// 如果 BeanDefinition 中的 configurationClass 属性不等于空，那么意味着已经处理过，输出日志信息
 			if (beanDef.getAttribute(ConfigurationClassUtils.CONFIGURATION_CLASS_ATTRIBUTE) != null) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Bean definition has already been processed as a configuration class: " + beanDef);
 				}
 			}
+			// 判断当前 BeanDefinition 是否加了 @Configuration注解或者其他注解，比如：@Bean、@Component、@ComponentScan，@Import
+			// @ImportSource 注解
 			else if (ConfigurationClassUtils.checkConfigurationClassCandidate(beanDef, this.metadataReaderFactory)) {
+				// 添加到存放 BeanDefinitionHolder 的集合中 configCandidates
 				configCandidates.add(new BeanDefinitionHolder(beanDef, beanName));
 			}
 		}
 
 		// Return immediately if no @Configuration classes were found
+		// 集合中没有需要处理的 BeanDefinitionHolder ，直接返回
 		if (configCandidates.isEmpty()) {
 			return;
 		}
 
 		// Sort by previously determined @Order value, if applicable
+		//
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
 			int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());
