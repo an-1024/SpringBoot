@@ -92,27 +92,37 @@ abstract class ConfigurationClassUtils {
 		}
 
 		AnnotationMetadata metadata;
-		// 通过注解注入的
+		// 通过注解注入的 BeanDefinition 都是 AnnotatedBeanDefinition, 因为类实现了 AnnotatedBeanDefinition 接口
+		// spring 内部的 BeanDefinition 都是 RootBeanDefinition, 继承了 AbstractBeanDefinition 类
+		// 此处主要是用于判断是否归属 AnnotatedBeanDefinition
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
+			// 从当前 bean 定义信息中获取元数据信息
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
+		// 判断是否是 spring 中默认的 BeanDefinition
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
+			// 获取当前 bean 的 class 对象
 			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
+			// 判断该类是否是指定的子类
 			if (BeanFactoryPostProcessor.class.isAssignableFrom(beanClass) ||
 					BeanPostProcessor.class.isAssignableFrom(beanClass) ||
 					AopInfrastructureBean.class.isAssignableFrom(beanClass) ||
 					EventListenerFactory.class.isAssignableFrom(beanClass)) {
 				return false;
 			}
+			// 根据 beanClass 生成对应的 AnnotationMetadata
 			metadata = AnnotationMetadata.introspect(beanClass);
 		}
+		// 如果上述两种情况都不符合
 		else {
 			try {
+				// 获取元数据读取器
 				MetadataReader metadataReader = metadataReaderFactory.getMetadataReader(className);
+				// 通过元数据读取器获取注解元数据
 				metadata = metadataReader.getAnnotationMetadata();
 			}
 			catch (IOException ex) {
@@ -124,7 +134,9 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 获取包含 Configuration 注解类的名称
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
+		// 判断当前 BeanDefinition 是否存在 @Configuration 注解，如果包含 @Configuration注解并且同时包含  proxyBeanMethods 属性
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
