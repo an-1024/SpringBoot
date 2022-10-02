@@ -140,6 +140,7 @@ abstract class ConfigurationClassUtils {
 		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 如果包含 @Bean，@ComponentScan, @Import @ImportSource  注解，则设置为 lite
 		else if (config != null || isConfigurationCandidate(metadata)) {
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
@@ -148,7 +149,9 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
+		// 获取具体的执行顺序
 		Integer order = getOrder(metadata);
+		//  如果指不为 null 的话，那么直接设置值到具体的 beanDefinition
 		if (order != null) {
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
 		}
@@ -165,11 +168,15 @@ abstract class ConfigurationClassUtils {
 	 */
 	public static boolean isConfigurationCandidate(AnnotationMetadata metadata) {
 		// Do not consider an interface or an annotation...
+		// 如果数据元不是注解或者接口类，isInterface() 返回 false
 		if (metadata.isInterface()) {
 			return false;
 		}
 
 		// Any of the typical annotations found?
+		// candidateIndicators 包含了 Component.class、ComponentScan.class、
+		// Import.class、ImportResource.class 注解类，如果数据元素属于这四个中的任何
+		// 一个， 则返回 true
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
@@ -177,6 +184,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// Finally, let's look for @Bean methods...
+		// 如果数据元不包含上述四个注解累，则查找是否是 @Bean 注解类
 		return hasBeanMethods(metadata);
 	}
 

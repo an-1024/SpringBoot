@@ -168,15 +168,23 @@ class ConfigurationClassParser {
 
 
 	public void parse(Set<BeanDefinitionHolder> configCandidates) {
+		// 遍历循环 configCandidates 进行注解的解析
 		for (BeanDefinitionHolder holder : configCandidates) {
+			// 获取 BeanDefinition
 			BeanDefinition bd = holder.getBeanDefinition();
 			try {
+				// 这里的三个逻辑判断和最开始对注解扫描的判断一样
+				// 判断 BeanDefinition 是否是注解类
 				if (bd instanceof AnnotatedBeanDefinition) {
+					// 根据 Beandefinition 类型的不同，调用 parse 不同的重载方法，实际上最终都是调用一个名叫 processConfigurationClass 方法
+					// 完成解析
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
+				// 判断是否是普通类
 				else if (bd instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) bd).hasBeanClass()) {
 					parse(((AbstractBeanDefinition) bd).getBeanClass(), holder.getBeanName());
 				}
+				// 或者以上两种都不是
 				else {
 					parse(bd.getBeanClassName(), holder.getBeanName());
 				}
@@ -223,11 +231,13 @@ class ConfigurationClassParser {
 
 
 	protected void processConfigurationClass(ConfigurationClass configClass, Predicate<String> filter) throws IOException {
+		// 判断是否需要跳过解析
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
 
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
+		// 处理 Imported 的情况，当前类是否被别的类 Import
 		if (existingClass != null) {
 			if (configClass.isImported()) {
 				if (existingClass.isImported()) {

@@ -291,12 +291,13 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		// Return immediately if no @Configuration classes were found
-		// 集合中没有需要处理的 BeanDefinitionHolder ，直接返回
+		// 集合中没有包含的 BeanDefinition 类，没有直接返回
 		if (configCandidates.isEmpty()) {
 			return;
 		}
 
 		// Sort by previously determined @Order value, if applicable
+		// 如果 beanDefinition 类包含了 @Order 注解，那么还需要进行排序操作
 		configCandidates.sort((bd1, bd2) -> {
 			int i1 = ConfigurationClassUtils.getOrder(bd1.getBeanDefinition());
 			int i2 = ConfigurationClassUtils.getOrder(bd2.getBeanDefinition());
@@ -304,31 +305,45 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		});
 
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
+		// 循环便利存在循环嵌套的其他注解
+		// 判断当前 BeanDefinition 类型是否是 SingletonBeanRegistry 类型
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
+			// 类型转换
 			sbr = (SingletonBeanRegistry) registry;
+			// 判断是否有自定义的 beanName 生成器
 			if (!this.localBeanNameGeneratorSet) {
+				// 获取自定义的 beanName 生成器
 				BeanNameGenerator generator = (BeanNameGenerator) sbr.getSingleton(
 						AnnotationConfigUtils.CONFIGURATION_BEAN_NAME_GENERATOR);
+				// 如果有自定义的命名生成器
 				if (generator != null) {
+					// 设置组件扫描 beanName 的生成策略
 					this.componentScanBeanNameGenerator = generator;
+					// 设置 import bean name 生成策略
 					this.importBeanNameGenerator = generator;
 				}
 			}
 		}
 
+		// 如果环境对象等于 null，则创建新的环境对象
 		if (this.environment == null) {
 			this.environment = new StandardEnvironment();
 		}
 
 		// Parse each @Configuration class
+		// 实例化 ConfigurationClassParser 类，并初始化相关参数，完成配置类的解析工作
 		ConfigurationClassParser parser = new ConfigurationClassParser(
 				this.metadataReaderFactory, this.problemReporter, this.environment,
 				this.resourceLoader, this.componentScanBeanNameGenerator, registry);
 
+		// 创建两个集合对象
+		// candidates 用于将之前加入的 configCandidates 去重
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
+		// alreadyParsed 用于判断是否已经处理过了
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
+			// 解析带有 @Controller、@Import、@ImportResource、@ComponentScan、@ComponentScans、@Bean 的 BeanDefinition
 			parser.parse(candidates);
 			parser.validate();
 

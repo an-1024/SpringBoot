@@ -78,11 +78,20 @@ class ConditionEvaluator {
 	 * @return if the item should be skipped
 	 */
 	public boolean shouldSkip(@Nullable AnnotatedTypeMetadata metadata, @Nullable ConfigurationPhase phase) {
+		// metadata 为 null或者配置类中不存在 @Conditional标签
 		if (metadata == null || !metadata.isAnnotated(Conditional.class.getName())) {
 			return false;
 		}
 
+		// 采用递归的方式进行判断第一次执行的时候 phase 为 null， 向下执行
 		if (phase == null) {
+			// 下面判断逻辑中，调用了 ConfigurationClassUtils.isConfigurationCandidate 方法，该方法主要做了以下几件事：
+			// 1. metadata 是 AnnotationMetadata 类的一个实例
+			// 2. 检查 bean 中是否使用 @Configuration 注解
+			// 3. 检查 bean 不是一个接口
+			// 4. 检查 bean 中是否包含 @Component @ComponentScan @Import @ImportSource 中任意一个
+			// 5. 检查 bean 中是否有 @Bean 注解
+			// 只要满足其中 1、2 或者 1、3 或者 1、 4 或者 1、5 就会继续递归
 			if (metadata instanceof AnnotationMetadata &&
 					ConfigurationClassUtils.isConfigurationCandidate((AnnotationMetadata) metadata)) {
 				return shouldSkip(metadata, ConfigurationPhase.PARSE_CONFIGURATION);
@@ -93,19 +102,26 @@ class ConditionEvaluator {
 		List<Condition> conditions = new ArrayList<>();
 		for (String[] conditionClasses : getConditionClasses(metadata)) {
 			for (String conditionClass : conditionClasses) {
+				// 获取到 @Conditional 注解后面的 value 数组
 				Condition condition = getCondition(conditionClass, this.context.getClassLoader());
 				conditions.add(condition);
 			}
 		}
-
+		// 对相关的条件进行排序操作
 		AnnotationAwareOrderComparator.sort(conditions);
 
 		for (Condition condition : conditions) {
 			ConfigurationPhase requiredPhase = null;
 			if (condition instanceof ConfigurationCondition) {
+				// requiredPhase 只可能是 null 或者是 ConfigurationCondition 的一个实例对象
 				requiredPhase = ((ConfigurationCondition) condition).getConfigurationPhase();
 			}
 			if ((requiredPhase == null || requiredPhase == phase) && !condition.matches(this.context, metadata)) {
+				// 此逻辑为：
+				// 1. requiredPhase 不是 ConfigurationCondition 的实例
+				// 2. phase == requiredPhase 从上述的递归可知，phase 可为 ConfigurationPhase.PARSE_CONFIGURATION
+				// 或者 ConfigurationPhase.REGISTER_BEAN
+				// 如果 1、2 或者 1、3 成立，则在此函数的上层将阻断 bean 注入 Spring 容器
 				return true;
 			}
 		}
