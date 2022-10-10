@@ -275,9 +275,9 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 	public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 		// 创建存放 BeanDefinitionHolder 的对象集合
 		List<BeanDefinitionHolder> configCandidates = new ArrayList<>();
-		// 当前 registry 就是 DefaultListableBeanFactory, 获取所有已经注册的 BeanDefinition的
+		// 当前 registry 就是 DefaultListableBeanFactory, 获取所有已经注册的 BeanDefinition 的 beanName
 		String[] candidateNames = registry.getBeanDefinitionNames();
-		// 遍历所有要处理的 BeanDefinition 的名称
+		// 遍历所有要处理的 BeanDefinition 的名称，筛选被注解修饰对应的 BeanDefinition
 		for (String beanName : candidateNames) {
 			// 根据名称获取对应 BeanDefinition 对象
 			BeanDefinition beanDef = registry.getBeanDefinition(beanName);

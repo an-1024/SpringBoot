@@ -51,8 +51,11 @@ import org.springframework.stereotype.Component;
  */
 abstract class ConfigurationClassUtils {
 
+	// Configuration 包含两个标识：full 和 lite
+	// Configuration class 如果是 @Configuration 注解标注的类，那么将属性标记为 full
 	public static final String CONFIGURATION_CLASS_FULL = "full";
 
+	// 非 @Configuration 注解标注的类，那将属性标注为：lite
 	public static final String CONFIGURATION_CLASS_LITE = "lite";
 
 	public static final String CONFIGURATION_CLASS_ATTRIBUTE =
@@ -149,10 +152,11 @@ abstract class ConfigurationClassUtils {
 		}
 
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
-		// 获取具体的执行顺序
+		// 获取具体的执行顺序：bean 定义是一个标记为 full 或 lite 的标识，如果设置了 order 则设置 order 属性值
 		Integer order = getOrder(metadata);
-		//  如果指不为 null 的话，那么直接设置值到具体的 beanDefinition
+		//  如果值不为 null 的话，那么直接设置值到具体的 beanDefinition
 		if (order != null) {
+			// 设置 bean 定义的 order 值
 			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
 		}
 
@@ -160,6 +164,8 @@ abstract class ConfigurationClassUtils {
 	}
 
 	/**
+	 * 检查给定的元数据，以查找给定的候选配置类是否被指定的注解标注
+	 *
 	 * Check the given metadata for a configuration class candidate
 	 * (or nested component class declared within a configuration/component class).
 	 * @param metadata the metadata of the annotated class
