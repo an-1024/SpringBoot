@@ -312,6 +312,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		// Detect any custom bean name generation strategy supplied through the enclosing application context
 		// 循环便利存在循环嵌套的其他注解
 		// 判断当前 BeanDefinition 类型是否是 SingletonBeanRegistry 类型
+		// 这段代码的作用是判断注解类中是否包含自定义的命名生成器
 		SingletonBeanRegistry sbr = null;
 		if (registry instanceof SingletonBeanRegistry) {
 			// 类型转换
