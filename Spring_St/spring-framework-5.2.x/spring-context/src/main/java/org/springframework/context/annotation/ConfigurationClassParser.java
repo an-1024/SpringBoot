@@ -176,7 +176,7 @@ class ConfigurationClassParser {
 				// 这里的三个逻辑判断和最开始对注解扫描的判断一样
 				// 判断 BeanDefinition 是否是注解类
 				if (bd instanceof AnnotatedBeanDefinition) {
-					// 根据 Beandefinition 类型的不同，调用 parse 不同的重载方法，实际上最终都是调用一个名叫 processConfigurationClass 方法
+					// 根据 BeanDefinition 类型的不同，调用 parse 不同的重载方法，实际上最终都是调用一个名叫 processConfigurationClass 方法
 					// 完成解析
 					parse(((AnnotatedBeanDefinition) bd).getMetadata(), holder.getBeanName());
 				}
@@ -231,16 +231,18 @@ class ConfigurationClassParser {
 
 
 	protected void processConfigurationClass(ConfigurationClass configClass, Predicate<String> filter) throws IOException {
-		// 判断是否需要跳过解析
+		// 通过条件计算器判断是否需要跳过解析
 		if (this.conditionEvaluator.shouldSkip(configClass.getMetadata(), ConfigurationPhase.PARSE_CONFIGURATION)) {
 			return;
 		}
-
+		// 第一次进入的时候 configuration 为 0， existingClass 肯定为 null，在此处理 configuration
+		// 如果同一个配置类被处理两次，两次都属于被 import 导入，那么就要合并导入类。如果配置类不是被导入的，则移除旧的使用新的配置类
 		ConfigurationClass existingClass = this.configurationClasses.get(configClass);
 		// 处理 Imported 的情况，当前类是否被别的类 Import
 		if (existingClass != null) {
 			if (configClass.isImported()) {
 				if (existingClass.isImported()) {
+					// 如果要处理的配置类 configClass 在已经处理的配置类记录中已存在，则合并两者的 importedBy 属性
 					existingClass.mergeImportedBy(configClass);
 				}
 				// Otherwise ignore new imported config class; existing non-imported class overrides it.
@@ -260,7 +262,7 @@ class ConfigurationClassParser {
 		// SourceClass 的意义：简单的包装类，目的是为了以统一的方式去处理带有注解的类，不管这些类是如何家在的
 		SourceClass sourceClass = asSourceClass(configClass, filter);
 		do {
-			// 解析各种注解
+			// 解析各种注解：核心处理
 			sourceClass = doProcessConfigurationClass(configClass, sourceClass, filter);
 		}
 		while (sourceClass != null);
@@ -283,12 +285,14 @@ class ConfigurationClassParser {
 
 		if (configClass.getMetadata().isAnnotated(Component.class.getName())) {
 			// Recursively process any member (nested) classes first
-			// 首先处理内部类，调用 doProcessConfigurationClass() 处理
+			// 首先处理内部类，即 Component 注解的类中可能存在内部类的注解也包含了 Component、ComponentScan 等注解
+			// 因此还需要对内部类进行解析。整个内部类解析是一个递归调用的过程
 			processMemberClasses(configClass, sourceClass, filter);
 		}
 
 		// Process any @PropertySource annotations
-		// 处理属性资源文件， 加 @PropertySource 注解
+		// 如果配置类上添加了 @PropertySource 注解，那么就解析家在 properties 文件，并将属性添加到 spring 上下文中
+		// 那么这些文件解析后得到的值存放到了哪里？ToDo：
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
@@ -303,7 +307,8 @@ class ConfigurationClassParser {
 
 		// Process any @ComponentScan annotations
 		// 处理 @ComponentScan 或者 @ComponentScans 注解
-		// 首先查找类上的 @ComponentScan 和 @ComponentScans 注解的所有属性
+		// 首先查找类上的 @ComponentScan 和 @ComponentScans 注解的所有属性，并将扫描包下的所有 bean 转换成填充后的 ConfigurationClass
+		// 此时就是将自定义的 bean 加载到 IOC 容器，因为扫描到的类也可能添加了 @ComponentScan 和 @ComponentScans 注解，因此也需要进行递归解析
 		Set<AnnotationAttributes> componentScans = AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), ComponentScans.class, ComponentScan.class);
 		if (!componentScans.isEmpty() &&
@@ -323,7 +328,9 @@ class ConfigurationClassParser {
 					if (bdCand == null) {
 						bdCand = holder.getBeanDefinition();
 					}
+					// 判断是否是一个配置类，并设置 full 或者 lite 属性
 					if (ConfigurationClassUtils.checkConfigurationClassCandidate(bdCand, this.metadataReaderFactory)) {
+						// 通过递归方法进行解析
 						parse(bdCand.getBeanClassName(), holder.getBeanName());
 					}
 				}
@@ -379,27 +386,37 @@ class ConfigurationClassParser {
 	 */
 	private void processMemberClasses(ConfigurationClass configClass, SourceClass sourceClass,
 			Predicate<String> filter) throws IOException {
-
+		// 找到内部类，内部类中也可能是一个配置类
 		Collection<SourceClass> memberClasses = sourceClass.getMemberClasses();
+		// 如果存在内部配置类
 		if (!memberClasses.isEmpty()) {
 			List<SourceClass> candidates = new ArrayList<>(memberClasses.size());
+			// 循环判断内部类是否是配置类
 			for (SourceClass memberClass : memberClasses) {
 				if (ConfigurationClassUtils.isConfigurationCandidate(memberClass.getMetadata()) &&
 						!memberClass.getMetadata().getClassName().equals(configClass.getMetadata().getClassName())) {
+					// 如果是配置类，将配置类加入 candidates 集合中
 					candidates.add(memberClass);
 				}
 			}
+			// 对配置类进行排序操作
 			OrderComparator.sort(candidates);
+			// 遍历符合规则的类
 			for (SourceClass candidate : candidates) {
 				if (this.importStack.contains(configClass)) {
+					// 出现配置类循环导入(循环依赖？？), 则直接报错
 					this.problemReporter.error(new CircularImportProblem(configClass, this.importStack));
 				}
 				else {
+					// 将配置类入栈
 					this.importStack.push(configClass);
 					try {
+						// 调用 processConfigurationClass 方法，因为内部类中还可能包含内部类，所以需要循环解析，实际工作中很少有这样
+						// 的情况
 						processConfigurationClass(candidate.asConfigClass(configClass), filter);
 					}
 					finally {
+						// 解析完出栈
 						this.importStack.pop();
 					}
 				}
@@ -468,14 +485,17 @@ class ConfigurationClassParser {
 	 * @throws IOException if loading a property source failed
 	 */
 	private void processPropertySource(AnnotationAttributes propertySource) throws IOException {
+		// 获取 name 属性
 		String name = propertySource.getString("name");
 		if (!StringUtils.hasLength(name)) {
 			name = null;
 		}
+		// 获取 encoding 属性
 		String encoding = propertySource.getString("encoding");
 		if (!StringUtils.hasLength(encoding)) {
 			encoding = null;
 		}
+		// 获取 value 属性
 		String[] locations = propertySource.getStringArray("value");
 		Assert.isTrue(locations.length > 0, "At least one @PropertySource(value) location is required");
 		boolean ignoreResourceNotFound = propertySource.getBoolean("ignoreResourceNotFound");
@@ -486,8 +506,11 @@ class ConfigurationClassParser {
 
 		for (String location : locations) {
 			try {
+				// 处理属性值的占位符
 				String resolvedLocation = this.environment.resolveRequiredPlaceholders(location);
+				// 将指定位置的资源转换成 resource 对象
 				Resource resource = this.resourceLoader.getResource(resolvedLocation);
+				// 添加 resource 对象为属性资源
 				addPropertySource(factory.createPropertySource(name, new EncodedResource(resource, encoding)));
 			}
 			catch (IllegalArgumentException | FileNotFoundException | UnknownHostException | SocketException ex) {
@@ -505,7 +528,9 @@ class ConfigurationClassParser {
 	}
 
 	private void addPropertySource(PropertySource<?> propertySource) {
+		// 获取属性资源名称
 		String name = propertySource.getName();
+		// 获取 Spring 上下中的资源属性
 		MutablePropertySources propertySources = ((ConfigurableEnvironment) this.environment).getPropertySources();
 
 		if (this.propertySourceNames.contains(name)) {

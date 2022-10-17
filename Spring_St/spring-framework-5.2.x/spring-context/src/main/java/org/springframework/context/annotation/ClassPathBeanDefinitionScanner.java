@@ -272,19 +272,29 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	protected Set<BeanDefinitionHolder> doScan(String... basePackages) {
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<>();
+		// 遍历 basePackages，处理 basePackages 逻辑：查找这个包下的类
 		for (String basePackage : basePackages) {
+			// 获取指定包路径下的类
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
+			// 遍历包路径下的类，获取对应类的信息
 			for (BeanDefinition candidate : candidates) {
+				// 解析 @Scope 注解：确定类的作用域
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);
 				candidate.setScope(scopeMetadata.getScopeName());
+				// 使用 beanName 生成器来生成 beanName
 				String beanName = this.beanNameGenerator.generateBeanName(candidate, this.registry);
+
 				if (candidate instanceof AbstractBeanDefinition) {
+					// 处理 beanDefinition 对象，例如：此 bean 是否可以自动装配到其他的 bean 中
 					postProcessBeanDefinition((AbstractBeanDefinition) candidate, beanName);
 				}
 				if (candidate instanceof AnnotatedBeanDefinition) {
+					// 处理定义在 BeanDefinition 上的通用注解，包括 @Lazy、@Primary、@DependsOn、@Description
 					AnnotationConfigUtils.processCommonDefinitionAnnotations((AnnotatedBeanDefinition) candidate);
 				}
+				// 检查 beanName 是否已经注册过，如果已经注册过，检查是否兼容
 				if (checkCandidate(beanName, candidate)) {
+					// 将当前
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
