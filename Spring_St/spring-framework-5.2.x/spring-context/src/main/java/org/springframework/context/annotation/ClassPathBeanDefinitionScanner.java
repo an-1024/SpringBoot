@@ -294,11 +294,13 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 				}
 				// 检查 beanName 是否已经注册过，如果已经注册过，检查是否兼容
 				if (checkCandidate(beanName, candidate)) {
-					// 将当前
+					// 将当前遍历的 bean 的定义和 beanName 封装成 BeanDefinitionHolder
 					BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(candidate, beanName);
+					// 根据 proxyMode 的值，选择是否创建作用域代理
 					definitionHolder =
 							AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
 					beanDefinitions.add(definitionHolder);
+					// 注册 beanDefinition
 					registerBeanDefinition(definitionHolder, this.registry);
 				}
 			}

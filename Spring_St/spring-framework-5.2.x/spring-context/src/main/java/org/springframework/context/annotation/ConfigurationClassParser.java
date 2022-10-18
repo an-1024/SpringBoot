@@ -357,16 +357,18 @@ class ConfigurationClassParser {
 		}
 
 		// Process individual @Bean methods
-		// 处理加了 @Bean 注解的方法
+		// 处理加了 @Bean 注解的方法, 将 @Bean 方法转化为 BeanMethod 对象，保存到集合中
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
 		}
 
 		// Process default methods on interfaces
+		// 处理接口的默认方法实现：因为从 jdk8开始，接口中的方法可以有自己的实现，因此接口方法上也可能添加 @Bean 注解
 		processInterfaces(configClass, sourceClass);
 
 		// Process superclass, if any
+		// 解析配置类的父类，如果配置类继承了某个父类，那么配置类的父类也会被解析
 		if (sourceClass.getMetadata().hasSuperClass()) {
 			String superclass = sourceClass.getMetadata().getSuperClassName();
 			if (superclass != null && !superclass.startsWith("java") &&
@@ -570,8 +572,11 @@ class ConfigurationClassParser {
 	 * Returns {@code @Import} class, considering all meta-annotations.
 	 */
 	private Set<SourceClass> getImports(SourceClass sourceClass) throws IOException {
+		// 创建集合，存储包含 @Import 注解的类
 		Set<SourceClass> imports = new LinkedHashSet<>();
+		// 创建集合，为了实现递归调用
 		Set<SourceClass> visited = new LinkedHashSet<>();
+		// 收集 @Import 注解的类
 		collectImports(sourceClass, imports, visited);
 		return imports;
 	}
@@ -650,6 +655,8 @@ class ConfigurationClassParser {
 					else if (candidate.isAssignable(ImportBeanDefinitionRegistrar.class)) {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions
+						// 如果 BeanDefinition 类属于 ImportBeanDefinitionRegistrar，那么就委托这个 ImportBeanDefinitionRegistrar
+						// 其他的 bean 的定义
 						Class<?> candidateClass = candidate.loadClass();
 						ImportBeanDefinitionRegistrar registrar =
 								ParserStrategyUtils.instantiateClass(candidateClass, ImportBeanDefinitionRegistrar.class,
