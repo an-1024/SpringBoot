@@ -95,7 +95,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		AnnotationMetadata metadata;
-		// 通过注解注入的 BeanDefinition 都是 AnnotatedBeanDefinition, 因为类实现了 AnnotatedBeanDefinition 接口
+		// 通过注解注入的 BeanDefinition 都是 AnnotatedBeanDefinition, 因为该接口继承了 BeanDefinition 接口
 		// spring 内部的 BeanDefinition 都是 RootBeanDefinition, 继承了 AbstractBeanDefinition 类
 		// 此处主要是用于判断是否归属 AnnotatedBeanDefinition
 		if (beanDef instanceof AnnotatedBeanDefinition &&
