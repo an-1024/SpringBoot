@@ -259,7 +259,7 @@ class ConfigurationClassParser {
 		// Recursively process the configuration class and its superclass hierarchy.
 		// 处理配置类，由于配置类可能存在父类(若父类的全类名是以 Java 开头的，则除外)，所有需要将 configClass 转换成 sourceClass 去解析，
 		// 然后返回 sourceClass 的父类。如果此时父类为 null，则不会进行 while 循环解析，如果父类不为 null，则会循环的去解析父类
-		// SourceClass 的意义：简单的包装类，目的是为了以统一的方式去处理带有注解的类，不管这些类是如何家在的
+		// SourceClass 的意义：简单的包装类，目的是为了以统一的方式去处理带有注解的类，不管这些类是如何加载的
 		SourceClass sourceClass = asSourceClass(configClass, filter);
 		do {
 			// 解析各种注解：核心处理
