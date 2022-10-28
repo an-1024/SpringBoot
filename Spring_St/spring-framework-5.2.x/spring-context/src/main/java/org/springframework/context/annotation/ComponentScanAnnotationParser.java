@@ -78,13 +78,18 @@ class ComponentScanAnnotationParser {
 		ClassPathBeanDefinitionScanner scanner = new ClassPathBeanDefinitionScanner(this.registry,
 				componentScan.getBoolean("useDefaultFilters"), this.environment, this.resourceLoader);
 
-		// 获取 @ComponentScan 的参数，并进行参数的设置工作
+		// 获取 bean 的 name 生成器
 		Class<? extends BeanNameGenerator> generatorClass = componentScan.getClass("nameGenerator");
 		boolean useInheritedGenerator = (BeanNameGenerator.class == generatorClass);
 		scanner.setBeanNameGenerator(useInheritedGenerator ? this.beanNameGenerator :
 				BeanUtils.instantiateClass(generatorClass));
 
-		// 获取代理的枚举值
+		// 获取代理的枚举值 当把生命周期短的bean（比如下例中的MyBean）注入到生命周期长的bean（比如下例中的SingletonBean）时，
+		// 我们必须做特殊处理，比如加<aop:scoped-proxy>来修饰短生命周期的bean。为什么？其实也好理解。比如下例中的生命周期长的
+		// bean（SingletonBean）的类型是Singleton，还没有用户访问时，在最初的时刻就建立了，而且只建立一次。这时它的一个属性
+		// myBean却要急着指向另外一个session类型的bean（com.MyBean），而com.MyBean的生命周期短（只有当有用户访问时，它才被生成）。
+		// 现在处于初始阶段，还没有用户上网呢，所以com.MyBean的真正对象还没有生成呢。所以<aop:scoped-proxy>的意思就是让myBean
+		// 这个属性指向com.MyBean的一个代理对象
 		ScopedProxyMode scopedProxyMode = componentScan.getEnum("scopedProxy");
 		if (scopedProxyMode != ScopedProxyMode.DEFAULT) {
 			scanner.setScopedProxyMode(scopedProxyMode);
@@ -117,7 +122,7 @@ class ComponentScanAnnotationParser {
 			scanner.getBeanDefinitionDefaults().setLazyInit(true);
 		}
 
-		// 明确 @ComponentScan 扫描的包的路径，如果不指定 basePackages，那么 Spring 默认会扫描所有包下的类
+		// 明确 @ComponentScan 扫描的包的路径，如果不指定 basePackages，那么 Spring 默认会扫描所有包下的类；获取 basePackages 属性
 		Set<String> basePackages = new LinkedHashSet<>();
 		String[] basePackagesArray = componentScan.getStringArray("basePackages");
 		for (String pkg : basePackagesArray) {
@@ -126,7 +131,7 @@ class ComponentScanAnnotationParser {
 			Collections.addAll(basePackages, tokenized);
 		}
 
-		// 用于指定某个类的包的路径进行扫描
+		// 获取 basePackages 属性，指定某个类的包的路径进行扫描
 		for (Class<?> clazz : componentScan.getClassArray("basePackageClasses")) {
 			basePackages.add(ClassUtils.getPackageName(clazz));
 		}

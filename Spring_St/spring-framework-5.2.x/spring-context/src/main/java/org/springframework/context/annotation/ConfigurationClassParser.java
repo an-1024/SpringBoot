@@ -291,8 +291,8 @@ class ConfigurationClassParser {
 		}
 
 		// Process any @PropertySource annotations
-		// 如果配置类上添加了 @PropertySource 注解，那么就解析家在 properties 文件，并将属性添加到 spring 上下文中
-		// 那么这些文件解析后得到的值存放到了哪里？ToDo：
+		// 如果配置类上添加了 @PropertySource 注解，那么就解析加载 properties 文件，并将属性添加到 spring 上下文中
+		// 那么这些文件解析后得到的值存放到了哪里-》存放到了 environment-》propertySourceList 中
 		for (AnnotationAttributes propertySource : AnnotationConfigUtils.attributesForRepeatable(
 				sourceClass.getMetadata(), PropertySources.class,
 				org.springframework.context.annotation.PropertySource.class)) {
