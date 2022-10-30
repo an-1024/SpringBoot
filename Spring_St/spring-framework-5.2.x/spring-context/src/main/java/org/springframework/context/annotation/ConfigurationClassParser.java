@@ -635,16 +635,17 @@ class ConfigurationClassParser {
 						// 通过反射生成一个 ImportSelector 对象
 						ImportSelector selector = ParserStrategyUtils.instantiateClass(candidateClass, ImportSelector.class,
 								this.environment, this.resourceLoader, this.registry);
+						// 查看 selector 是否有过滤器
 						Predicate<String> selectorFilter = selector.getExclusionFilter();
 						if (selectorFilter != null) {
 							exclusionFilter = exclusionFilter.or(selectorFilter);
 						}
-						// 判断是否是实现了 DeferredImportSelector 接口的 selector，如果是延迟处理
+						// 判断是否是实现了 DeferredImportSelector 接口的 selector，则用deferredImportSelectorHandler 处理
 						if (selector instanceof DeferredImportSelector) {
 							this.deferredImportSelectorHandler.handle(configClass, (DeferredImportSelector) selector);
 						}
 						else {
-							// 不是实现了 DeferredImportSelector 接口的类，执行 selectImports() 方法
+							// 不是实现了 DeferredImportSelector 接口的类， 调用selectImports方法获取要加载的类全限定名称，递归调用本方法继续解析
 							String[] importClassNames = selector.selectImports(currentSourceClass.getMetadata());
 							Collection<SourceClass> importSourceClasses = asSourceClasses(importClassNames, exclusionFilter);
 							// 递归处理，通过 Import 注册的 BeanDefinition 类有可能也包含 @Import 注解
@@ -661,14 +662,16 @@ class ConfigurationClassParser {
 						ImportBeanDefinitionRegistrar registrar =
 								ParserStrategyUtils.instantiateClass(candidateClass, ImportBeanDefinitionRegistrar.class,
 										this.environment, this.resourceLoader, this.registry);
-						//
+						// 放入importBeanDefinitionRegistrar，用于后面加载
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
 					else {
 						// Candidate class not an ImportSelector or ImportBeanDefinitionRegistrar ->
 						// process it as an @Configuration class
+						// 处理@Configuration注解类，或者是普通类（直接生成Bean）
 						this.importStack.registerImport(
 								currentSourceClass.getMetadata(), candidate.getMetadata().getClassName());
+						//递归回到doProcessConfigurationClass处理@Configuration注解类
 						processConfigurationClass(candidate.asConfigClass(configClass), exclusionFilter);
 					}
 				}
