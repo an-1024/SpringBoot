@@ -197,7 +197,7 @@ class ConfigurationClassParser {
 						"Failed to parse configuration class [" + bd.getBeanClassName() + "]", ex);
 			}
 		}
-
+		// 处理实现了 ImportBeanDefinitionRegistrar 接口的逻辑
 		this.deferredImportSelectorHandler.process();
 	}
 
