@@ -657,12 +657,12 @@ class ConfigurationClassParser {
 						// Candidate class is an ImportBeanDefinitionRegistrar ->
 						// delegate to it to register additional bean definitions
 						// 如果 BeanDefinition 类属于 ImportBeanDefinitionRegistrar，那么就委托这个 ImportBeanDefinitionRegistrar
-						// 其他的 bean 的定义
+						// 完成其他的 bean 的注册
 						Class<?> candidateClass = candidate.loadClass();
 						ImportBeanDefinitionRegistrar registrar =
 								ParserStrategyUtils.instantiateClass(candidateClass, ImportBeanDefinitionRegistrar.class,
 										this.environment, this.resourceLoader, this.registry);
-						// 放入importBeanDefinitionRegistrar，用于后面加载
+						// 放入importBeanDefinitionRegistrar集合中
 						configClass.addImportBeanDefinitionRegistrar(registrar, currentSourceClass.getMetadata());
 					}
 					else {
@@ -845,6 +845,7 @@ class ConfigurationClassParser {
 		}
 
 		public void process() {
+			// 获取
 			List<DeferredImportSelectorHolder> deferredImports = this.deferredImportSelectors;
 			this.deferredImportSelectors = null;
 			try {
@@ -852,6 +853,7 @@ class ConfigurationClassParser {
 					DeferredImportSelectorGroupingHandler handler = new DeferredImportSelectorGroupingHandler();
 					deferredImports.sort(DEFERRED_IMPORT_COMPARATOR);
 					deferredImports.forEach(handler::register);
+					// 开始处理实现了 DeferredImportSelectorGroupingHandler 接口的类
 					handler.processGroupImports();
 				}
 			}
@@ -881,6 +883,7 @@ class ConfigurationClassParser {
 		public void processGroupImports() {
 			for (DeferredImportSelectorGrouping grouping : this.groupings.values()) {
 				Predicate<String> exclusionFilter = grouping.getCandidateFilter();
+				// getImports 获取自动装类配信息
 				grouping.getImports().forEach(entry -> {
 					ConfigurationClass configurationClass = this.configurationClasses.get(entry.getMetadata());
 					try {
@@ -951,6 +954,7 @@ class ConfigurationClassParser {
 		 */
 		public Iterable<Group.Entry> getImports() {
 			for (DeferredImportSelectorHolder deferredImport : this.deferredImports) {
+				// 获取自动配置类的信息，SrpingBoot 的一些自动加载类就是通过实现这个方法完成的
 				this.group.process(deferredImport.getConfigurationClass().getMetadata(),
 						deferredImport.getImportSelector());
 			}

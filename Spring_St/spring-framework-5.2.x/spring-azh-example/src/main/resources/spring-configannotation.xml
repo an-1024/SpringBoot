@@ -7,4 +7,6 @@
 
 	<!--指定扫描包的路径-->
 	<context:component-scan base-package="com.azh.configannotation.config"/>
+
+	<bean id="abstractBeanDefinitionTest" class="com.azh.configannotation.beanclass.AbstractBeanDefinitionTest"/>
 </beans>

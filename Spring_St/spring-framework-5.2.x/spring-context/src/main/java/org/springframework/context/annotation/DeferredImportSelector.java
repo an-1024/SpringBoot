@@ -58,6 +58,8 @@ public interface DeferredImportSelector extends ImportSelector {
 		/**
 		 * Process the {@link AnnotationMetadata} of the importing @{@link Configuration}
 		 * class using the specified {@link DeferredImportSelector}.
+		 *
+		 * SpringBoot 的自动导入实现的方法
 		 */
 		void process(AnnotationMetadata metadata, DeferredImportSelector selector);
 

@@ -104,7 +104,7 @@ abstract class ConfigurationClassUtils {
 			// 从当前 bean 定义信息中获取元数据信息
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
-		// 判断是否是 spring 中默认的 BeanDefinition
+		// 判断 BeanDefinition 是否是 AbstractBeanDefinition 类型
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
 			// since we possibly can't even load the class file for this Class.
