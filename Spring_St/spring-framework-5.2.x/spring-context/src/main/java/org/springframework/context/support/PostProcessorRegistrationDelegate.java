@@ -271,7 +271,7 @@ final class PostProcessorRegistrationDelegate {
 		// a bean is not eligible for getting processed by all BeanPostProcessors.
 		// 记录下 BeanPostProcessor 的目标计数，加 1 的原因是下面一段代码添加了一个 BeanPostProcessorChecker，所以计数要 +1
 		int beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + 1 + postProcessorNames.length;
-		//
+		// 添加 BeanPostProcessorChecker (主要用于记录信息) 到 beanFactory 中
 		beanFactory.addBeanPostProcessor(new BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));
 
 		// Separate between BeanPostProcessors that implement PriorityOrdered,
@@ -402,13 +402,29 @@ final class PostProcessorRegistrationDelegate {
 			this.beanPostProcessorTargetCount = beanPostProcessorTargetCount;
 		}
 
+		/**
+		 * 后置处理器的 before 方法，什么都不做，直接返回对象
+		 *
+		 * @param bean the new bean instance
+		 * @param beanName the name of the bean
+		 * @return
+		 */
 		@Override
 		public Object postProcessBeforeInitialization(Object bean, String beanName) {
 			return bean;
 		}
 
+		/**
+		 * 后置处理器的 after 方法，用来判断哪些是不需要检测的 bean
+		 *
+		 * @param bean the new bean instance
+		 * @param beanName the name of the bean
+		 * @return
+		 */
 		@Override
 		public Object postProcessAfterInitialization(Object bean, String beanName) {
+			// 1. BeanPostProcessor 类型不检测
+			// 2. ROLE_INFRASTRUCTURE 这种类型的 bean 不检测(Spring 自己的 bean)
 			if (!(bean instanceof BeanPostProcessor) && !isInfrastructureBean(beanName) &&
 					this.beanFactory.getBeanPostProcessorCount() < this.beanPostProcessorTargetCount) {
 				if (logger.isInfoEnabled()) {

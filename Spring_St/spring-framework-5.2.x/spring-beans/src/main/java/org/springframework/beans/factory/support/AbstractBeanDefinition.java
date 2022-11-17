@@ -195,6 +195,12 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean synthetic = false;
 
+	/**
+	 * 定义这个 bean 的应用所属用户角色：分三种情况
+	 * 1. ROLE_APPLICATION: 用户定义的 bean
+	 * 2. ROLE_SUPPORT: 通常是外部配置的 bean，这些配置类比较大， 比较复杂
+	 * 3. ROLE_INFRASTRUCTURE：全是后台角色，与用户无关。完全属于 Spring 内部工作的 bean 时使用
+	 */
 	private int role = BeanDefinition.ROLE_APPLICATION;
 
 	@Nullable
