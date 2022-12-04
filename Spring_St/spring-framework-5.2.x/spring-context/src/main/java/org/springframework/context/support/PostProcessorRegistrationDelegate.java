@@ -276,55 +276,87 @@ final class PostProcessorRegistrationDelegate {
 
 		// Separate between BeanPostProcessors that implement PriorityOrdered,
 		// Ordered, and the rest.
+		// 定义存放实现了 PriorityOrdered 接口的 BeanPostProcessor 集合
 		List<BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<>();
+		// 定义存放 spring 内部的 BeanPostProcessor
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<>();
+		// 定义存放实现了 Ordered 接口的 BeanPostProcessor 的 bean 名称的集合
 		List<String> orderedPostProcessorNames = new ArrayList<>();
+		// 定义存放普通的 BeanPostProcessor 的 bean 名称的集合
 		List<String> nonOrderedPostProcessorNames = new ArrayList<>();
+		// 遍历实现了 BeanPostProcessor 接口的 bean
 		for (String ppName : postProcessorNames) {
+			// 如果该 bean 的类型属于 PriorityOrdered
 			if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+				// 获取该 bean 的实例
 				BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+				// 将该实例添加到 priorityOrderedPostProcessors 集合中
 				priorityOrderedPostProcessors.add(pp);
+				// 如果 bean 实现 BeanPostProcessor 接口的实例实现了 MergedBeanDefinitionPostProcessor 接口，
+				// 则将 bean 添加到 internalPostProcessors 集合中。
 				if (pp instanceof MergedBeanDefinitionPostProcessor) {
+					// 将实例 bean 添加到 internalPostProcessors 集合中
 					internalPostProcessors.add(pp);
 				}
 			}
+			// 如果 bean 实现了 BeanPostProcessor 接口的实例实现了 Ordered 接口，则将对应的 bean 名称添加到 orderedPostProcessorNames
+			// 集合中
 			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+				// 将对应的 bean 名称添加到 orderedPostProcessorNames 集合中
 				orderedPostProcessorNames.add(ppName);
 			}
 			else {
+				// 如果不属于实现上述类型接口的 bean 实例，那么就将对应的 bean 名称添加到 nonOrderedPostProcessorNames 集合中
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
 
 		// First, register the BeanPostProcessors that implement PriorityOrdered.
+		// 对实现了 PriorityOrdered 接口 bean 实例排序
 		sortPostProcessors(priorityOrderedPostProcessors, beanFactory);
+		// 将实现了 PriorityOrdered 接口的 bean 实例添加到 beanFactory 中
 		registerBeanPostProcessors(beanFactory, priorityOrderedPostProcessors);
 
 		// Next, register the BeanPostProcessors that implement Ordered.
 		List<BeanPostProcessor> orderedPostProcessors = new ArrayList<>(orderedPostProcessorNames.size());
+		// 注册所有实现了 Ordered 接口的 bean 实例
 		for (String ppName : orderedPostProcessorNames) {
+			// 根据 bean 名称找到对应的 bean 实例
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+			// 添加到 orderedPostProcessors 集合中
 			orderedPostProcessors.add(pp);
+			// 如果 bean 实例还实现了 MergedBeanDefinitionPostProcessor，那么将该实例添加到 internalPostProcessors 集合中
 			if (pp instanceof MergedBeanDefinitionPostProcessor) {
 				internalPostProcessors.add(pp);
 			}
 		}
+
+		// 对实现了 Ordered 的 bean 实例进行排序
 		sortPostProcessors(orderedPostProcessors, beanFactory);
+		// 将实现了 Ordered 接口的 bean 实例添加到 beanFactory 中
 		registerBeanPostProcessors(beanFactory, orderedPostProcessors);
 
 		// Now, register all regular BeanPostProcessors.
+		// 注册没有实现 PriorityOrdered 和 Ordered 接口的 bean 实例
 		List<BeanPostProcessor> nonOrderedPostProcessors = new ArrayList<>(nonOrderedPostProcessorNames.size());
 		for (String ppName : nonOrderedPostProcessorNames) {
+			// 根据 bean 名称找到对应的 bean 实例
 			BeanPostProcessor pp = beanFactory.getBean(ppName, BeanPostProcessor.class);
+			// 将没有实现 PriorityOrdered 和 Ordered 接口的 bean 实例添加到 nonOrderedPostProcessors 集合中
 			nonOrderedPostProcessors.add(pp);
+			// 如果 bean 实例还实现了 MergedBeanDefinitionPostProcessor，那么将该实例添加到 internalPostProcessors 集合中
 			if (pp instanceof MergedBeanDefinitionPostProcessor) {
 				internalPostProcessors.add(pp);
 			}
 		}
+
+		// 将没有实现 PriorityOrdered 和 Ordered 接口的 bean 实例添加到 beanFactory 中
 		registerBeanPostProcessors(beanFactory, nonOrderedPostProcessors);
 
 		// Finally, re-register all internal BeanPostProcessors.
+		// 将所有实现了 MergedBeanDefinitionPostProcessor 接口的 bean 实例进行排序
 		sortPostProcessors(internalPostProcessors, beanFactory);
+		// 将所有实现了 MergedBeanDefinitionPostProcessor 接口添加到 beanFactory 中
 		registerBeanPostProcessors(beanFactory, internalPostProcessors);
 
 		// Re-register post-processor for detecting inner beans as ApplicationListeners,
