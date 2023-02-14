@@ -14,7 +14,7 @@ public class FirstSpringBootPrjApplication {
     public static void main(String[] args) {
         // ----设置 Banner 是否启动 start----
         SpringApplicationBuilder banner = new SpringApplicationBuilder(FirstSpringBootPrjApplication.class);
-//        banner.application().setAdditionalProfiles("dev");
+        banner.application().setAdditionalProfiles("dev");
 
         banner.bannerMode(Banner.Mode.LOG).run(args);
 
