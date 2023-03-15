@@ -8,11 +8,7 @@ spring:
   #配置nacos注册中心地址
   cloud:
     nacos:
-      discovery:
-        server-addr: 10.211.55.3:9001
-        #namespace: bc50d386-8870-4a26-8803-0187486c57be
-        #cluster-name: SH
-        group: azhshop
+        server-addr: 10.211.55.3:80
 
   #数据库配置
   datasource:
