@@ -8,7 +8,11 @@ spring:
   #配置nacos注册中心地址
   cloud:
     nacos:
+      discovery:
+        cluster-name: NM
         server-addr: 10.211.55.3:80
+        group: user
+        namespace: bc926284-89ef-46e1-968b-2ab69e87e3e2
 
   #数据库配置
   datasource:
