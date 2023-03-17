@@ -10,9 +10,6 @@ spring:
     nacos:
       discovery:
         server-addr: 10.211.55.3:80
-        cluster-name: BJ
-        group: user
-        namespace: 17694b24-9c06-4b87-aae0-9acb2b7dfc3b
 
 
 management:
