@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: mall-order  #微服务名称
+    name: mallOrder  #微服务名称
 
   #配置nacos注册中心地址
   cloud:
@@ -56,6 +56,6 @@ management:
 ribbon:
   eager-load:
     enabled: true
-    clients: mall-order
+    clients: mallOrder
 
 

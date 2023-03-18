@@ -6,16 +6,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-public class WebFluxConfig {
-    
+public class WebClientConfig {
+
     @LoadBalanced
     @Bean
-    WebClient.Builder webClientBuilder(){
+    WebClient.Builder webClientBuilder() {
         return WebClient.builder();
     }
-    
+
+
     @Bean
-    WebClient webClient(){
+    WebClient webClient() {
         return webClientBuilder().build();
     }
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.net.URLEncoder;
 
 @RestController
 @RequestMapping("/mall_user")
@@ -34,24 +35,24 @@ public class UserController {
         //String url = "http://localhost:8020/order/findOrderByUserId/"+id;
         // ribbon实现，restTemplate需要添加@LoadBalanced注解
         // mall-order  ip:port
-        String url = "http://mall-order/mallorder/findOrderByUserId/"+id;
+        String url = "http://mallOrder/mallorder/findOrderByUserId/"+id;
 
         R result = restTemplate.getForObject(url,R.class);
         return result;
     }
-    
-    @RequestMapping(value = "/findOrderByUserId2/{id}")
-    public Mono<R> findOrderByUserIdWithWebClient(@PathVariable("id") Integer id){
-        String url = "http://mall‐order/order/findOrderByUserId/"+id;
+
+    @RequestMapping(value="/findOrderByUserIdWithWebClient/{id}")
+    public Mono<R> findOrderByUserIdWithWebClient(@PathVariable("id")Integer id) {
+        String url = "http://mallOrder/mallorder/findOrderByUserId/"+id;
         //基于WebClient
         Mono<R> result = webClient.get().uri(url).retrieve().bodyToMono(R.class);
         
         return result;
     }
 
-    @RequestMapping(value = "/findOrderByUserId3/{id}")
-    public Mono<R> findOrderByUserIdWithWebFlux(@PathVariable("id") Integer id){
-        String url = "http://mall‐order/order/findOrderByUserId/"+id;
+    @RequestMapping(value = "/findOrderByUserIdWithWebFlux/{id}")
+    public Mono<R> findOrderByUserIdWithWebFlux(@PathVariable("id")Integer id) {
+        final String url = "http://mallOrder/mallorder/findOrderByUserId/"+id;
         //基于WebClient+webFlux
         Mono<R> result = WebClient.builder().filter(lbFunction).build()
                 .get().uri(url).retrieve().bodyToMono(R.class);
