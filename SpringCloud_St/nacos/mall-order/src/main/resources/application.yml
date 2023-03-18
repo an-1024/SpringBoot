@@ -10,6 +10,8 @@ spring:
     nacos:
       discovery:
         server-addr: 10.211.55.3:80
+        cluster-name: SH
+        enabled: true
 
   #数据库配置
   datasource:
@@ -50,6 +52,10 @@ management:
     web:
       exposure:
         include: '*'
-
+        
+ribbon:
+  eager-load:
+    enabled: true
+    clients: mall-order
 
 
