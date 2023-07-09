@@ -1,13 +1,9 @@
 package com.azh.dto;
 
 import com.alibaba.fastjson.JSON;
-import com.azh.dto.CarAnnotationDto;
-import com.azh.dto.UserAnnotationDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.annotation.Lazy;
 
 @Slf4j
 public class MyBeanSpringProcessorDto implements BeanPostProcessor {

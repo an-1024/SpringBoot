@@ -1,7 +1,7 @@
 package com.azh.springannotationprocessor;
 
 import com.alibaba.fastjson.JSON;
-import com.azh.FirstSpringBootPrjApplication;
+import com.azh.SpringBootConfigFileApplication;
 import com.azh.config.BeanPostProcessorConfig;
 import com.azh.config.User;
 import com.azh.dto.CarAnnotationDto;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -20,7 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @Slf4j
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {FirstSpringBootPrjApplication.class})
+@SpringBootTest(classes = {SpringBootConfigFileApplication.class})
 public class SpringAnnotationPostProcessor {
 
     @Autowired
