@@ -1,4 +1,4 @@
-package com.azh.config;
+package com.azh.common;
 
 import org.springframework.boot.Banner;
 import org.springframework.core.env.Environment;
@@ -6,7 +6,7 @@ import org.springframework.core.env.Environment;
 import java.io.PrintStream;
 
 public class MyBanner implements Banner {
-    
+
     private static final String BANNER = "${AnsiColor.BRIGHT_YELLOW}\n" +
             " \n" +
             " \n" +
@@ -30,11 +30,11 @@ public class MyBanner implements Banner {
             "                           `=---='\n" +
             "        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
             "               // 佛祖保佑 永不宕机 永无BUG //\n" +
-            " ";
+            " "; 
     
     @Override
     public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
-        out.print(BANNER);
+        out.printf(BANNER);
         out.println();
     }
 }
