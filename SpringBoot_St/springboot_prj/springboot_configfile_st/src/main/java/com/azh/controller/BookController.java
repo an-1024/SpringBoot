@@ -25,7 +25,7 @@ public class BookController {
     // map 作为入参
     @RequestMapping("/testmapparam")
     public Map<String,Object> book(@RequestBody Map<String,Object> paramMap) {
-        System.out.println("--------" + JSON.toJSONString(paramMap.get("param")));
+        System.out.println("--------" + JSON.toJSONString(paramMap));
         return paramMap;
     }
 }
