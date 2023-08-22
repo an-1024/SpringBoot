@@ -3,9 +3,11 @@ package com.azh.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 @ConfigurationProperties(prefix = "book")
-public class Book {
+public class Book implements Serializable {
     /**
      * 书籍名称
      */
