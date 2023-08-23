@@ -11,6 +11,7 @@
     <modules>
         <module>springboot_configfile_st</module>
         <module>springboot_eventlistener_st</module>
+        <module>springboot_useinterceptor_st</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -1,0 +1,6 @@
+server:
+  port: 8093
+  servlet:
+    context-path: /interceptor
+  tomcat:
+    uri-encoding: UTF-8
