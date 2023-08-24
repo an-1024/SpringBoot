@@ -6,17 +6,18 @@
 
     <!--项目分组、项目名称、版本号-->
     <groupId>com.azh</groupId>
-    <artifactId>first-spring-boot-prj</artifactId>
+    <artifactId>spring-boot-prj</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>springboot_configfile_st</module>
         <module>springboot_eventlistener_st</module>
         <module>springboot_useinterceptor_st</module>
+        <module>springboot_datasource_st</module>
     </modules>
     <packaging>pom</packaging>
 
-    <name>first-spring-boot-prj</name>
-    <description>第一个 Spring Boot 工程</description>
+    <name>spring-boot-prj</name>
+    <description>Spring Boot 学习工程</description>
 
     <!--
       start: 不使用 Spring-boot-starter-parent 管理
@@ -97,7 +98,8 @@
         </dependency>
 
 
-<!--        &lt;!&ndash;日志依赖模块 logback&ndash;&gt;
+<!--        
+        &lt;!&ndash;日志依赖模块 logback&ndash;&gt;
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
@@ -107,7 +109,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>-->
+        </dependency>
+-->
 
         <!--lombok 日志简化使用-->
         <dependency>
@@ -128,7 +131,6 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.14</version>
         </dependency>
-
     </dependencies>
 
     <profiles>

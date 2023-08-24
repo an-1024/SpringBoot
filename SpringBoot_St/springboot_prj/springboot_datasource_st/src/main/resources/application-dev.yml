@@ -1,0 +1,15 @@
+# 启动端口
+server:
+  port: 8094
+  servlet:
+    context-path: /datasourceconfig
+  tomcat:
+    uri-encoding: utf-8
+    
+# 数据源配置
+spring:
+  datasource:
+    url: dbc:mysql://10.211.55.3:3306/dev_server01_data?useSSL=true&createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&useAffectedRows=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: nuJs5CjrxFqHwg/nX3zLVt9XeNgFnHyBUsiUw6LgYdAMJ13RT7RH7yYfAzFHN/Vg8cqGrvOGLbfq0c8yTAbMI2AryQ4f9NANvh46
+    #type: com.alibaba.druid.pool.DruidDataSource
