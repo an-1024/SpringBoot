@@ -83,12 +83,14 @@
             <!-- <optional>true</optional> -->
             <!-- 排除依赖，主动断开依赖的资源，排除项目中的依赖冲突时使用，
             不依赖该项目，被排除的资源不需要指定版本-->
-            <!--            <exclusions>
-                            <exclusion>
-                                <groupId></groupId>
-                                <artifactId></artifactId>
-                            </exclusion>
-                        </exclusions>-->
+            <!--
+            <exclusions>
+                <exclusion>
+                    <groupId></groupId>
+                    <artifactId></artifactId>
+                </exclusion>
+            </exclusions>
+             -->
         </dependency>
 
         <!--一般我们开发是Web项目，所以还需要引入 Web 的 Starter-->
@@ -112,7 +114,7 @@
         </dependency>
 -->
 
-        <!--lombok 日志简化使用-->
+        <!--lombok 依赖 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

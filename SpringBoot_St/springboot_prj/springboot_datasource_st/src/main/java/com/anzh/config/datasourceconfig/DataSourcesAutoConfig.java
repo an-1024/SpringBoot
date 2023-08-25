@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.Date;
 
 @Configuration
 @EnableConfigurationProperties(DataSourceProperties.class)
@@ -42,10 +41,5 @@ public class DataSourcesAutoConfig {
             log.info("解密数据异常，异常信息为：{}", e.getMessage());
         } 
         return null;
-    }
-
-    public static void main(String[] args) {
-        Date date = new Date(2023,8,23);
-        System.out.println(date);
     }
 }
