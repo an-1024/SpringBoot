@@ -1,7 +1,7 @@
 package com.azh.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.azh.config.Book;
+import com.azh.dto.BookDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +14,12 @@ import java.util.Map;
 @RestController
 public class BookController {
     @Autowired
-    private Book book;
+    private BookDTO bookDto;
 
     @GetMapping("/book")
     public String book() {
-        System.out.println("--------" + book.toString());
-        return book.toString();
+        System.out.println("--------" + bookDto.toString());
+        return bookDto.toString();
     }
 
     // map 作为入参

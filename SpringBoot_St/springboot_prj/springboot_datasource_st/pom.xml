@@ -19,12 +19,12 @@
     <dependencies>
         <!-- 数据库依赖配置 start 直接使用 springBoot 集成的 DataSource -->
         <!--spring-boot-starter-jdbc自动配置-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
-<!--            <version>3.1.2</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash;数据库驱动&ndash;&gt;-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+        <!--数据库驱动-->
 <!--        <dependency>-->
 <!--            <groupId>mysql</groupId>-->
 <!--            <artifactId>mysql-connector-java</artifactId>-->

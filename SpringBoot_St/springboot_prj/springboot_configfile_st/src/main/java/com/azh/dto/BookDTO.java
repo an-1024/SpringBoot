@@ -1,4 +1,4 @@
-package com.azh.config;
+package com.azh.dto;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 @Component
-@ConfigurationProperties(prefix = "book")
-public class Book implements Serializable {
+@ConfigurationProperties(prefix = "bookdto")
+public class BookDTO implements Serializable {
     /**
      * 书籍名称
      */

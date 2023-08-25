@@ -1,4 +1,4 @@
-package com.azh.config;
+package com.azh.dto;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "my")
 @Slf4j
-public class User {
+public class UserVO {
     /**
      * 姓名
      */

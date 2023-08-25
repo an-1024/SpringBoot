@@ -1,7 +1,7 @@
 package com.azh.controller;
 
-import com.azh.config.User;
-import com.azh.config.Users;
+import com.azh.dto.UserVO;
+import com.azh.dto.UsersVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class UserController {
     @Autowired
-    private User user;
+    private UserVO user;
 
     @Autowired
-    private Users users;
+    private UsersVO usersVO;
 
-    @GetMapping("/user")
+    @GetMapping("/uservo")
     public String book() {
         log.info("-------- {}", user.toString());
-        log.info("--------", users.toString());
-        return user.toString() + users.toString();
+        log.info("--------", usersVO.toString());
+        return user.toString() + usersVO.toString();
     }
 }

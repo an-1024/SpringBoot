@@ -1,6 +1,6 @@
 package com.azh;
 
-import com.azh.common.MyBanner;
+import com.azh.config.MyBanner;
 import com.corundumstudio.socketio.SocketIOServer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -22,7 +22,7 @@ public class BeanPostProcessorAspect {
         log.info("beforeUserAnnotationDto----------------{}", JSON.toJSONString(joinPoint.getThis()));
     }
 
-    @Before("execution(* com.azh.config.User.aspectAop(..))")
+    @Before("execution(* com.azh.dto.User.aspectAop(..))")
     public void beforeUser(JoinPoint joinPoint){
         log.info("beforeUser----------------{}", JSON.toJSONString(joinPoint.getThis()));
     }

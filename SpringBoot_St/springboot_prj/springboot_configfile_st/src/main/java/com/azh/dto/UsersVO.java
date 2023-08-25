@@ -1,4 +1,4 @@
-package com.azh.config;
+package com.azh.dto;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@ConfigurationProperties(prefix = "user")
-public class Users {
-    private List<User> userList;
+@ConfigurationProperties(prefix = "uservo")
+public class UsersVO {
+    private List<UserVO> userList;
 
-    public List<User> getUserList() {
+    public List<UserVO> getUserList() {
         return userList;
     }
 
-    public void setUserList(List<User> userList) {
+    public void setUserList(List<UserVO> userList) {
         this.userList = userList;
     }
 

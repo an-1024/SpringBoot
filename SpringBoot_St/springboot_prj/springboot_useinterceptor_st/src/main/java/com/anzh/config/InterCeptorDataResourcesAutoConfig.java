@@ -1,4 +1,4 @@
-package com.anzh.config.datasourceconfig;
+package com.anzh.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.anzh.utils.RSAUtil;
@@ -10,27 +10,26 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-import java.util.Date;
 
 @Configuration
 @EnableConfigurationProperties(DataSourceProperties.class)
 @Slf4j
-public class DataSourcesAutoConfig {
-    
-    private final DataSourceProperties properties;
-    
+public class InterCeptorDataResourcesAutoConfig {
+
     // 公钥Key
     private static final String PUBLIC_KEY = "MGcwDQYJKoZIhvcNAQEBBQADVgAwUwJMALWkYTLAO82qCfge6uZUZWEc0NbarkpUvG3Ku3Pn9NfiOcBlQNXTtrf2qM0I00duV4puaesLFIxYVYztHdtLDMWBWCX8s5pz08ceJwIDAQAB";
+
+    private final DataSourceProperties properties;
     
     @Autowired
-    public DataSourcesAutoConfig (DataSourceProperties properties) {
+    public InterCeptorDataResourcesAutoConfig (DataSourceProperties properties) {
         this.properties = properties;
     }
-    
+
     @Bean
     public DataSource dataSource() {
         try (DruidDataSource dataSource = new DruidDataSource()) {
-        //可以在此处调用相关接口获取数据库的配置信息进行 DataSource 的配置
+            //可以在此处调用相关接口获取数据库的配置信息进行 DataSource 的配置
             dataSource.setUrl(properties.getUrl());
             dataSource.setUsername(properties.getUsername());
             //密码处解密
@@ -40,12 +39,7 @@ public class DataSourcesAutoConfig {
             return dataSource;
         }catch (Exception e) {
             log.info("解密数据异常，异常信息为：{}", e.getMessage());
-        } 
+        }
         return null;
-    }
-
-    public static void main(String[] args) {
-        Date date = new Date(2023,8,23);
-        System.out.println(date);
     }
 }

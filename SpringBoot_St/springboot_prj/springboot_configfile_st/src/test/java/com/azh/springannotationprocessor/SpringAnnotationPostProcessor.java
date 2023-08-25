@@ -3,10 +3,10 @@ package com.azh.springannotationprocessor;
 import com.alibaba.fastjson.JSON;
 import com.azh.SpringBootConfigFileApplication;
 import com.azh.config.BeanPostProcessorConfig;
-import com.azh.config.User;
 import com.azh.dto.CarAnnotationDto;
-import com.azh.dto.UserAnnotationDto;
 import com.azh.dto.MyBeanSpringProcessorDto;
+import com.azh.dto.UserAnnotationDto;
+import com.azh.dto.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ public class SpringAnnotationPostProcessor {
 
     @Autowired
     @Lazy
-    private User user;
+    private UserVO user;
 
     @Autowired
     private CarAnnotationDto carAnnotationDto;

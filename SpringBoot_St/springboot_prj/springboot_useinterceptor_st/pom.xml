@@ -11,14 +11,32 @@
 
     <artifactId>springboot_useinterceptor_st</artifactId>
     
-    <dependencies>
-        
-    </dependencies>
-
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+    
+    <dependencies>
+        <!-- 自定义数据数源依赖 start  -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azh</groupId>
+            <artifactId>springboot_datasource_st</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azh</groupId>
+            <artifactId>springboot_configfile_st</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- 自定义数据数源依赖 end  -->
+    </dependencies>
 
     <profiles>
         <profile>
