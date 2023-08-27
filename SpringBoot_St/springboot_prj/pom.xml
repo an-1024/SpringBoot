@@ -161,6 +161,30 @@
                 <profileActive>prod</profileActive>
             </properties>
         </profile>
+
+        <profile>
+            <!--	mybatis		-->
+            <id>mybatis</id>
+            <properties>
+                <profileActive>mybatis</profileActive>
+            </properties>
+        </profile>
+        
+        <profile>
+            <!--	mybatis-plus		-->
+            <id>mybatis-plus</id>
+            <properties>
+                <profileActive>mybatis-plus</profileActive>
+            </properties>
+        </profile>
+
+        <profile>
+            <!--	bean-searcher		-->
+            <id>bean-searcher</id>
+            <properties>
+                <profileActive>bean-searcher</profileActive>
+            </properties>
+        </profile>
     </profiles>
 
     <!-- 构建项目所需要的信息 -->
@@ -187,7 +211,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.5.1</version>
                 <!-- Java 版本配置 -->
                 <configuration>
                     <source>1.8</source>
@@ -205,6 +229,22 @@
                             <artifactId>spring-boot-configuration-processor</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
